@@ -8,14 +8,13 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 import { LayoutDefaultComponent } from './layouts/layout-default/layout-default.component';
-import { CuerpoComponent } from './components/cuerpo/cuerpo.component';
 import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [CommonModule, RouterModule, MatButtonModule, MatIconModule, MatMenuModule, MatCardModule],
   providers: [ThemeService],
-  exports: [LayoutDefaultComponent, CabeceraComponent, CuerpoComponent],
-  declarations: [CabeceraComponent, LayoutDefaultComponent, CabeceraComponent, CuerpoComponent],
+  exports: [LayoutDefaultComponent, CabeceraComponent],
+  declarations: [CabeceraComponent, LayoutDefaultComponent, CabeceraComponent],
   entryComponents: [],
 })
 export class ThemeModule {

@@ -8,6 +8,11 @@ const routes: Routes = [
     path: '',
     component: PagesComponent,
     children: [
+      {
+        path: paginas.LOGIN,
+        loadChildren: () =>
+          import('../pages/login/login.module').then((m) => m.LoginModule),
+      },
       // {
       //   path: '',
       //   loadChildren: () =>
