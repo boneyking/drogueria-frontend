@@ -1,4 +1,4 @@
-export class RespuestaLogin{
-  mensaje: string;
-  token: string;
+export class RespuestaLogin {
+	mensaje: string;
+	token: string;
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
+import * as jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-articulo',
@@ -8,11 +7,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./articulo.component.scss'],
 })
 export class ArticuloComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {
-    if (!this.authService.logueado()) {
-      this.router.navigate(['/login']);
-    }
+  constructor() {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const decoded = jwt_decode(localStorage.getItem('token'));
+    console.log(decoded);
+
+  }
 }
