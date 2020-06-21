@@ -1,0 +1,30 @@
+<button mat-button [matMenuTriggerFor]="menuArticulos" >
+  <span>Articulos</span>
+</button>
+<mat-menu #menuArticulos="matMenu">
+  <button mat-menu-item>
+    <mat-icon>list</mat-icon>
+    <span>Listado Articulos</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>input</mat-icon>
+    <span>Crear Articulo</span>
+  </button>
+</mat-menu>
+<button mat-button style="float:right" mat-raise-button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>login</mat-icon>
+    <span>Ingresar</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>person</mat-icon>
+    <span>Perfil</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>logout</mat-icon>
+    <span>Salir</span>
+  </button>
+</mat-menu>
