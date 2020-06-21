@@ -1,14 +1,37 @@
-import { Injectable } from '@angular/core';
-
+import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { RespuestaLogin } from '../models/respuesta-login.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
+  readonly URL_API = 'http://localhost:4000/api';
+  constructor(private http: HttpClient, private router: Router) {}
+  ngOnDestroy(): void {}
 
-  constructor() { }
+  // tslint:disable-next-line: ban-types
+  public iniciarSesion(rut: string, password: string) {
+    return this.http
+      .post(
+        this.URL_API + '/login',
+        {
+          rut,
+          password,
+        }
+      )
+      .toPromise();
+  }
 
-  // ingresar(){
-  //   this.http.post('http://localhost:4000/api/ingresar')
-  // }
+  public cerrarSesion() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
+  }
+
+  public logueado() {
+    return !!localStorage.getItem('token');
+  }
 }

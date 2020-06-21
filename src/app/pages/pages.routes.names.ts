@@ -1,3 +1,5 @@
 export const paginas = {
-  LOGIN: 'login'
+  LOGIN: 'login',
+  LOGOUT: 'logout',
+  ARTICULO: '',
 };

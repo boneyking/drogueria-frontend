@@ -1,5 +1,5 @@
 <div style="width: 100%;">
-  <div class="cabecera">
+  <div class="cabecera" *ngIf="authService.logueado()">
     <app-cabecera></app-cabecera>
   </div>
   <div class="cuerpo">
