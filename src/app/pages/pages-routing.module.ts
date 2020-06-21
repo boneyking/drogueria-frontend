@@ -20,6 +20,11 @@ const routes: Routes = [
             (m) => m.ArticuloModule
           ),
       },
+      {
+        path: paginas.LOGOUT,
+        loadChildren: () =>
+          import('./login/login.module').then((m) => m.LoginModule),
+      },
       // {
       //   path: '',
       //   loadChildren: () =>

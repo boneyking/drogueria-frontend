@@ -28,7 +28,7 @@ export class AuthService implements OnDestroy {
 
   public cerrarSesion() {
     localStorage.removeItem('token');
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   public logueado() {
