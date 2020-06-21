@@ -9,6 +9,7 @@ import { Validadores } from 'src/app/utils/validadores';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { RespuestaLogin } from 'src/app/models/respuesta-login.model';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private ngxLoaderService: NgxUiLoaderService
   ) {
     this.usuarioYaLogueado();
   }
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.ngxLoaderService.start();
     const rut = this.formulario.controls.rut.value;
     const password = this.formulario.controls.password.value;
 
@@ -52,9 +55,11 @@ export class LoginComponent implements OnInit {
         .then((res: RespuestaLogin) => {
           localStorage.setItem('token', res.token);
           this.router.navigate(['/']);
+          this.ngxLoaderService.stop();
         });
     } catch (error) {
       console.log(error);
+      this.ngxLoaderService.stop();
     }
   }
 }
