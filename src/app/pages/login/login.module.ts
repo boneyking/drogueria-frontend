@@ -7,15 +7,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: LoginComponent,
-  }
+	{
+		path: '',
+		component: LoginComponent,
+	},
 ];
 
 @NgModule({
-  declarations: [LoginComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), ThemeModule, SharedModule, ReactiveFormsModule],
-  exports: [LoginComponent]
+	declarations: [LoginComponent],
+	imports: [CommonModule, RouterModule.forChild(routes), ThemeModule, SharedModule, ReactiveFormsModule],
+	exports: [LoginComponent],
 })
 export class LoginModule {}

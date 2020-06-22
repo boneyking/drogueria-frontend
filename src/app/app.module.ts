@@ -15,36 +15,38 @@ import { AppRoutingModule } from './app-routing-module';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ThemeModule } from './theme/theme.module';
 import { defaultTheme } from './theme/temas/default-theme';
+import { ToastrModule } from 'ngx-toastr';
 
 moment.locale('es');
 
 registerLocaleData(locale__es_cl);
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+	return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient],
-      },
-    }),
-    RouterModule.forRoot([]),
-    ThemeModule.forRoot({
-      themes: [defaultTheme],
-      active: 'default',
-    }),
-    AppRoutingModule,
-    HttpClientModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
+	declarations: [AppComponent],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		TranslateModule.forRoot({
+			loader: {
+				provide: TranslateLoader,
+				useFactory: createTranslateLoader,
+				deps: [HttpClient],
+			},
+		}),
+		RouterModule.forRoot([]),
+		ThemeModule.forRoot({
+			themes: [defaultTheme],
+			active: 'default',
+		}),
+		AppRoutingModule,
+		HttpClientModule,
+		ToastrModule.forRoot(),
+	],
+	providers: [],
+	bootstrap: [AppComponent],
 })
 export class AppModule {}

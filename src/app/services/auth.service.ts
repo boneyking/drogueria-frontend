@@ -7,27 +7,27 @@ import { RespuestaLogin } from '../models/respuesta-login.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class AuthService {
-  readonly URL_API = environment.RUTA_API;
-  constructor(private http: HttpClient, private router: Router) {}
+	readonly URL_API = environment.RUTA_API;
+	constructor(private http: HttpClient, private router: Router) {}
 
-  public iniciarSesion(rut: string, password: string) {
-    return this.http
-      .post(this.URL_API + '/login', {
-        rut,
-        password,
-      })
-      .toPromise();
-  }
+	public iniciarSesion(rut: string, password: string) {
+		return this.http
+			.post(this.URL_API + '/login', {
+				rut,
+				password,
+			})
+			.toPromise();
+	}
 
-  public cerrarSesion() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
-  }
+	public cerrarSesion() {
+		localStorage.removeItem('token');
+		this.router.navigate(['/login']);
+	}
 
-  public logueado() {
-    return !!localStorage.getItem('token');
-  }
+	public logueado() {
+		return !!localStorage.getItem('token');
+	}
 }
