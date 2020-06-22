@@ -7,6 +7,7 @@ import { RespuestaLogin } from 'src/app/models/respuesta-login.model';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import * as jwt_decode from 'jwt-decode';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-login',
@@ -15,6 +16,7 @@ import * as jwt_decode from 'jwt-decode';
 })
 export class LoginComponent implements OnInit {
 	public formulario: FormGroup;
+	public rutaImagen: string;
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -24,6 +26,7 @@ export class LoginComponent implements OnInit {
 		private notificacionesService: NotificacionesService
 	) {
 		this.usuarioYaLogueado();
+		this.rutaImagen = environment.RUTA_ASSETS + 'images/logo-sb.png';
 	}
 
 	ngOnInit(): void {

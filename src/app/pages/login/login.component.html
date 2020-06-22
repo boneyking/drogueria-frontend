@@ -3,7 +3,10 @@
 		[ngClass]="{ 'was-validated': formulario.touched && formulario.valid}" class="formulario">
 		<mat-card class="example-card">
 			<mat-card-header>
-				<mat-card-title>Ingresar</mat-card-title>
+				<mat-card-title>
+					<img [src]="rutaImagen" style="width:100%;" />
+				</mat-card-title>
+				<mat-card-subtitle><h2>Ingresar</h2></mat-card-subtitle>
 			</mat-card-header>
 			<mat-card-content>
 				<mat-form-field appearance="standard" class="formulario-elemento">
