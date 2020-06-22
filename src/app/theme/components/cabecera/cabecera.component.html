@@ -7,10 +7,10 @@
       <mat-icon>list</mat-icon>
       <span>Listado Articulos</span>
     </button>
-    <button mat-menu-item>
+    <a mat-menu-item routerLink="/articulo/crearArticulo">
       <mat-icon>input</mat-icon>
       <span>Crear Articulo</span>
-    </button>
+    </a>
   </mat-menu>
   <button mat-button style="float:right" mat-raise-button mat-icon-button [matMenuTriggerFor]="menu"
     aria-label="Example icon-button with a menu">
