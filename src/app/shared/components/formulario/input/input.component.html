@@ -5,7 +5,7 @@
 	<mat-error *ngIf="formulario.touched && formulario.get(nombreCampo).invalid">
 		<span *ngFor="let error of formulario.controls[nombreCampo].errors | keyvalue">
 			<span
-				*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span>
+				*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span><br>
 		</span>
 	</mat-error>
 </mat-form-field>
