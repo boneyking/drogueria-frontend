@@ -1,31 +1,64 @@
 <div class="contenedor-formulario">
-	<form [formGroup]="formularioCrearArticulo" class="formulario">
-		<mat-card class="example-card">
+	<form [formGroup]="formularioCrearArticulo">
+		<mat-card layout="row" layout-align="center center">
 			<mat-card-header>
-				<mat-card-title>Articulo</mat-card-title>
-
+				<mat-card-title>Crear nuevo articulo</mat-card-title>
 			</mat-card-header>
-			<mat-card-subtitle>Información general</mat-card-subtitle>
 			<mat-card-content>
-				<mat-form-field appearance="standard" class="formulario-elemento">
-					<input matInput placeholder="Código de barra" type="text" formControlName="codigoBarra" />
-					<mat-hint>Indique código de barra</mat-hint>
-					<mat-error *ngIf="formularioCrearArticulo.hasError('codigoBarra') && !formularioCrearArticulo.hasError('required')">
-						Please enter a valid email address
-					</mat-error>
-				</mat-form-field>
-				<mat-form-field appearance="standard" class="formulario-elemento">
-					<input matInput placeholder="Nombre" type="text" formControlName="nombre" />
-					<mat-hint>Indique nombre articulo</mat-hint>
-				</mat-form-field>
-				<mat-form-field appearance="standard" class="formulario-elemento">
-					<input matInput placeholder="Descripción" type="text" formControlName="descripcion" />
-					<mat-hint>Indique descripción</mat-hint>
-				</mat-form-field>
+				<mat-card-subtitle>Información general</mat-card-subtitle>
+				<app-input
+					[formulario]="formularioCrearArticulo"
+					[nombreCampo]="'codigoBarra'"
+					[placeholder]="'Ej: 111111111'"
+					[tipoInput]="'text'"
+					[etiqueta]="'Código de barra'"
+					[hint]="'Indique código de barra'"></app-input>
+				<app-input
+					[formulario]="formularioCrearArticulo"
+					[nombreCampo]="'nombre'"
+					[placeholder]="'Ej:Paracetamol'"
+					[tipoInput]="'text'"
+					[etiqueta]="'Nombre'"
+					[hint]="'Indique nombre'"></app-input>
+				<app-input
+					[formulario]="formularioCrearArticulo"
+					[nombreCampo]="'descripcion'"
+					[placeholder]="'Ej:Es un buen articulo'"
+					[tipoInput]="'text'"
+					[etiqueta]="'Descripción'"
+					[hint]="'Indique descripción'"></app-input>
+				<app-input
+					[formulario]="formularioCrearArticulo"
+					[nombreCampo]="'cantidad'"
+					[placeholder]="'Indique cantidad de articulos'"
+					[tipoInput]="'number'"
+					[etiqueta]="'Cantidad'"
+					[hint]="'Indique cantidad'"></app-input>
 			</mat-card-content>
-			<mat-card-actions>
-
-			</mat-card-actions>
+			<mat-card-content>
+				<mat-card-subtitle>Información Lote</mat-card-subtitle>
+				<app-input
+					[formulario]="formularioCrearArticulo"
+					[nombreCampo]="'identificadorLote'"
+					[placeholder]="'Indique identificador del lote'"
+					[tipoInput]="'text'"
+					[etiqueta]="'Identificador lote'"
+					[hint]="'Identificador lote'"></app-input>
+				<app-datepicker
+					[formulario]="formularioCrearArticulo"
+					[nombreCampo]="'fechaVencimientoLote'"
+					[placeholder]="'Indique fecha vencimiento lote'"
+					[etiqueta]="'Fecha vencimiento lote'"
+					[hint]="'Indique fecha vencimiento lote'"></app-datepicker>
+			</mat-card-content>
 		</mat-card>
+		<div style="float: right; margin-top: 10px;">
+			<button mat-button mat-raised-button color="accent" style="margin:5px;">
+				<mat-icon>cancel</mat-icon> Cancelar
+			</button>
+			<button mat-button mat-raised-button color="primary" style="margin:5px;">
+				<mat-icon>save</mat-icon> Guardar
+			</button>
+		</div>
 	</form>
 </div>

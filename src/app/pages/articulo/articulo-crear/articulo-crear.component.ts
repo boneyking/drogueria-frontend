@@ -22,7 +22,7 @@ export class ArticuloCrearComponent implements OnInit {
 			codigoBarra: new FormControl(null, [Validators.required]),
 			nombre: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
 			descripcion: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
-			cantidad: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(Number.MAX_VALUE)]),
+			cantidad: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(Number.MAX_VALUE)]),
 			identificadorLote: new FormControl(null, [Validators.required]),
 			fechaVencimientoLote: new FormControl(null, [Validators.required]),
 		});
