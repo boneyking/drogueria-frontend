@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
 import { NgxUiLoaderConfig, NgxUiLoaderModule } from 'ngx-ui-loader';
-
+import { TranslateModule } from '@ngx-translate/core';
+import { InputComponent } from './components/formulario/input/input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 	bgsColor: '#00ACC1',
@@ -31,8 +33,15 @@ const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 	textPosition: 'center-center',
 };
 @NgModule({
-	declarations: [],
-	imports: [CommonModule, MaterialModule, NgxUiLoaderModule.forRoot(NGX_UI_LOADER_CONFIG)],
-	exports: [MaterialModule, NgxUiLoaderModule],
+	declarations: [InputComponent],
+	imports: [
+		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule,
+		NgxUiLoaderModule.forRoot(NGX_UI_LOADER_CONFIG),
+		TranslateModule,
+	],
+	exports: [MaterialModule, NgxUiLoaderModule, TranslateModule, InputComponent],
 })
 export class SharedModule {}

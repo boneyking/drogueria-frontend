@@ -1,0 +1,11 @@
+<mat-form-field appearance="fill" [formGroup]="formulario">
+	<mat-label>{{etiqueta}}</mat-label>
+	<input matInput [placeholder]="placeholder" [type]="tipoInput" formControlName="{{nombreCampo}}" />
+	<mat-hint>{{hint}}</mat-hint>
+	<mat-error *ngIf="formulario.touched && formulario.get(nombreCampo).invalid">
+		<span *ngFor="let error of formulario.controls[nombreCampo].errors | keyvalue">
+			<span
+				*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span>
+		</span>
+	</mat-error>
+</mat-form-field>
