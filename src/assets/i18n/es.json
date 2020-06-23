@@ -33,6 +33,7 @@
 		"PATTERN": "Caracteres inválidos",
 		"LOGIN-INVALIDO": "Nombre de usuario y/o contraseña inválidos",
 		"RUT-REGISTRADO": "Este RUT ya se encuentra registrado",
-		"CONTRASENAS-NO-COINCIDEN": "Las contraseñas no coinciden"
+		"CONTRASENAS-NO-COINCIDEN": "Las contraseñas no coinciden",
+		"RUTINVALIDO": "Rut invalido"
 	}
 }
