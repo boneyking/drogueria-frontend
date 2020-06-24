@@ -1,6 +1,6 @@
 <mat-form-field appearance="fill" [formGroup]="formulario">
 	<mat-label>{{etiqueta}}</mat-label>
-	<input matInput [placeholder]="placeholder" [type]="tipoInput" formControlName="{{nombreCampo}}" />
+	<input matInput [placeholder]="placeholder" [type]="tipoInput" formControlName="{{nombreCampo}}" (keyup)="textoCambiado($event)" />
 	<mat-hint>{{hint}}</mat-hint>
 	<mat-error *ngIf="formulario.touched && formulario.get(nombreCampo).invalid">
 		<span *ngFor="let error of formulario.controls[nombreCampo].errors | keyvalue">
