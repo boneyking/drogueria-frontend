@@ -14,4 +14,8 @@ export class ArticuloService {
 	public crearArticulo(articulo: Articulo) {
 		return this.http.post(this.URL_API + '/articulo/crearArticulo', articulo).toPromise();
 	}
+
+	public verificarExistenciaCodigoBarra(codigoBarra: string) {
+		return this.http.get(this.URL_API + '/articulo/' + codigoBarra).toPromise();
+	}
 }

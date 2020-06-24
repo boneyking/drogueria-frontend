@@ -1,5 +1,5 @@
 <div class="contenedor-formulario">
-	<form [formGroup]="formularioCrearArticulo">
+	<form [formGroup]="formularioCrearArticulo" (submit)="guardarArticulo()">
 		<mat-card layout="row" layout-align="center center">
 			<mat-card-header>
 				<mat-card-title>Crear nuevo articulo</mat-card-title>
@@ -12,7 +12,9 @@
 					[placeholder]="'Ej: 111111111'"
 					[tipoInput]="'text'"
 					[etiqueta]="'Código de barra'"
-					[hint]="'Indique código de barra'"></app-input>
+					[hint]="'Indique código de barra'"
+					(valorInput)="verificarExistenciaCodigoBarra($event)"
+					onPaste="return false"></app-input>
 				<app-input
 					[formulario]="formularioCrearArticulo"
 					[nombreCampo]="'nombre'"
@@ -53,10 +55,10 @@
 			</mat-card-content>
 		</mat-card>
 		<div style="float: right; margin-top: 10px;">
-			<button mat-button mat-raised-button color="accent" style="margin:5px;">
+			<button mat-button mat-raised-button color="accent" style="margin:5px;" (click)="cancelar()">
 				<mat-icon>cancel</mat-icon> Cancelar
 			</button>
-			<button mat-button mat-raised-button color="primary" style="margin:5px;">
+			<button mat-button mat-raised-button color="primary" style="margin:5px;" >
 				<mat-icon>save</mat-icon> Guardar
 			</button>
 		</div>
