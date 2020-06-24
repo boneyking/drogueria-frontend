@@ -25,7 +25,9 @@ export class ArticuloCrearComponent implements OnInit {
 		private ngxLoaderService: NgxUiLoaderService,
 		private utilsService: UtilsService,
 		private notificacionesService: NotificacionesService
-	) {}
+	) {
+		this.articuloExistente = new Articulo();
+	}
 
 	ngOnInit(): void {
 		this.inicializarFormulario();
@@ -51,6 +53,8 @@ export class ArticuloCrearComponent implements OnInit {
 					this.articuloExistente = res.articulo;
 					if (this.articuloExistente !== null) {
 						this.notificacionesService.mostrarMensaje('warning', 'Articulo', 'Código de barra ya existe para un articulo');
+					} else {
+						this.articuloExistente = new Articulo();
 					}
 					this.ngxLoaderService.stop();
 				})
@@ -62,13 +66,11 @@ export class ArticuloCrearComponent implements OnInit {
 	}
 
 	guardarArticulo(): void {
-		if(this.articuloExistente !== null){
+		if (this.articuloExistente.id !== '') {
 			this.notificacionesService.mostrarMensaje('warning', 'Articulo', 'Código de barra ya existe para un articulo');
-			return;
-		}
-
-
-		if (this.formularioCrearArticulo.valid) {
+			this.formularioCrearArticulo.controls.codigoBarra.setValue('');
+			this.formularioCrearArticulo.controls.codigoBarra.updateValueAndValidity();
+		} else if (this.formularioCrearArticulo.valid) {
 			this.ngxLoaderService.start();
 
 			const nuevoArticulo = new Articulo();
@@ -76,13 +78,11 @@ export class ArticuloCrearComponent implements OnInit {
 			nuevoArticulo.nombre = this.formularioCrearArticulo.controls.nombre.value;
 			nuevoArticulo.descripcion = this.formularioCrearArticulo.controls.descripcion.value;
 			nuevoArticulo.cantidad = this.formularioCrearArticulo.controls.cantidad.value;
-			nuevoArticulo.lote = new Lote();
 			nuevoArticulo.lote.id = uuidv4();
 			nuevoArticulo.lote.identificador = this.formularioCrearArticulo.controls.identificadorLote.value;
 			nuevoArticulo.lote.fechaVencimiento = this.formularioCrearArticulo.controls.fechaVencimientoLote.value;
 
 			const informacionToken = this.utilsService.decodificarToken(localStorage.getItem('token'));
-			nuevoArticulo.responsable = new Responsable();
 			nuevoArticulo.responsable.nombre = informacionToken.nombreUsuario;
 			nuevoArticulo.responsable.usuarioId = informacionToken.id;
 
@@ -107,6 +107,7 @@ export class ArticuloCrearComponent implements OnInit {
 	}
 
 	cancelar(): void {
+		this.articuloExistente = new Articulo();
 		this.inicializarFormulario();
 	}
 }
