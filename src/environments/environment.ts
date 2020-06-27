@@ -7,6 +7,10 @@ export const environment = {
   RUTA_API: 'http://localhost:4000/api',
   SOCKET: '',
   RUTA_ASSETS: './assets/',
+  PAGINACION: {
+	  CANTIDAD_RESULTADOS: 5,
+	  PAGINA: 1
+  }
 };
 
 /*

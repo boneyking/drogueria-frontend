@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Validadores } from 'src/app/utils/validadores';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-import { RespuestaLogin } from 'src/app/models/respuesta-login.model';
+import { RespuestaLogin } from 'src/app/models/responses/respuesta-login.model';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import * as jwt_decode from 'jwt-decode';

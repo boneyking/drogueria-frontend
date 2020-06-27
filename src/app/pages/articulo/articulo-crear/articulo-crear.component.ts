@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Responsable } from 'src/app/models/responsable.model';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
-import { RespuestaArticulo } from 'src/app/models/respuesta-articulo.model';
+import { RespuestaArticulo } from 'src/app/models/responses/respuesta-articulo.model';
 import { WebSocketService } from 'src/app/services/web-socket.service';
-import { RespuestaSocket } from 'src/app/models/respuesta-socket.model';
+import { RespuestaSocket } from 'src/app/models/responses/respuesta-socket.model';
 
 
 @Component({

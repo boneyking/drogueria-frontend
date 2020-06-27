@@ -5,8 +5,11 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { WebSocketService } from 'src/app/services/web-socket.service';
 import { Arsenal } from 'src/app/models/arsenal.model';
-import { RespuestaSocket } from 'src/app/models/respuesta-socket.model';
+import { RespuestaSocket } from 'src/app/models/responses/respuesta-socket.model';
 import { UtilsService } from 'src/app/services/utils.service';
+import { RequestPaginada } from 'src/app/models/requests/request-paginada.model';
+import { RespuestaPaginada } from 'src/app/models/responses/respuesta-paginada.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-arsenal-crear',
@@ -30,6 +33,15 @@ export class ArsenalCrearComponent implements OnInit {
 		},
 	];
 
+	public requestPaginada: RequestPaginada = new RequestPaginada();
+	public arsenalRespuestaPaginada: RespuestaPaginada<Arsenal> = new RespuestaPaginada<Arsenal>();
+
+	public filtroBusqueda = '';
+	public cantidadResultadosBusqueda = environment.PAGINACION.CANTIDAD_RESULTADOS;
+	public orden: string;
+	public ordenarPor: string;
+	public pagina = environment.PAGINACION.PAGINA;
+
 	constructor(
 		private formBuilder: FormBuilder,
 		private arsenalService: ArsenalService,
@@ -51,6 +63,25 @@ export class ArsenalCrearComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.inicializarFormulario();
+		this.obtenerArsenalPaginado(this.pagina,'');
+	}
+
+	obtenerArsenalPaginado(pagina: number, filtroBusqueda: string): void {
+		this.requestPaginada = new RequestPaginada();
+		this.requestPaginada.filtro = filtroBusqueda;
+		this.requestPaginada.cantidadResultados = this.cantidadResultadosBusqueda;
+		this.requestPaginada.orden = 'asc';
+		this.requestPaginada.ordenarPor = 'nombre';
+		this.requestPaginada.pagina = pagina;
+
+		this.arsenalService
+			.obtenerArsenalPaginado(this.requestPaginada)
+			.then((res: RespuestaPaginada<Arsenal>) => {
+				this.arsenalRespuestaPaginada.items = res.items;
+				this.arsenalRespuestaPaginada.totalDocumentos = res.totalDocumentos;
+				this.arsenalRespuestaPaginada.totalItems = res.totalItems;
+			})
+			.catch((e) => console.log(e));
 	}
 
 	inicializarFormulario(): void {
@@ -71,15 +102,16 @@ export class ArsenalCrearComponent implements OnInit {
 			arsenal.responsable.usuarioId = informacionToken.id;
 
 			this.ngxLoaderService.start();
-			this.arsenalService.crearArsenal(arsenal)
-			.then((res: RespuestaSocket) => {
-				console.log(res);
-				this.ngxLoaderService.stop();
-			})
-			.catch(error => {
-				console.log(error);
-				this.ngxLoaderService.stop();
-			});
+			this.arsenalService
+				.crearArsenal(arsenal)
+				.then((res: RespuestaSocket) => {
+					console.log(res);
+					this.ngxLoaderService.stop();
+				})
+				.catch((error) => {
+					console.log(error);
+					this.ngxLoaderService.stop();
+				});
 		} else {
 			this.formularioCrearArsenal.markAllAsTouched();
 		}
