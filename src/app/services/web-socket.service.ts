@@ -7,7 +7,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Injectable({
 	providedIn: 'root',
 })
-export class WebsocketService {
+export class WebSocketService {
 	private socket: any;
 	private readonly uri: string = 'ws://localhost:8081';
 	private opcionesError = {

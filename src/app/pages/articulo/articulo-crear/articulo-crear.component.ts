@@ -9,6 +9,9 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { Responsable } from 'src/app/models/responsable.model';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { RespuestaArticulo } from 'src/app/models/respuesta-articulo.model';
+import { WebSocketService } from 'src/app/services/web-socket.service';
+import { RespuestaSocket } from 'src/app/models/respuesta-socket.model';
+
 
 @Component({
 	selector: 'app-articulo-crear',
@@ -24,9 +27,18 @@ export class ArticuloCrearComponent implements OnInit {
 		private articuloService: ArticuloService,
 		private ngxLoaderService: NgxUiLoaderService,
 		private utilsService: UtilsService,
-		private notificacionesService: NotificacionesService
+		private notificacionesService: NotificacionesService,
+		private webSocketService: WebSocketService
 	) {
 		this.articuloExistente = new Articulo();
+
+		this.webSocketService.listen('arsenalCreado').subscribe((data: RespuestaSocket) => {
+			this.notificacionesService.mostrarMensaje('alert', 'Arsenal Creado', data.mensaje);
+		});
+
+		this.webSocketService.listen('arsenalNoCreado').subscribe((data: RespuestaSocket) => {
+			this.notificacionesService.mostrarMensaje('error', 'Arsenal No Creado', data.mensaje);
+		});
 	}
 
 	ngOnInit(): void {
