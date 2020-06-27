@@ -3,23 +3,20 @@ import { AuthService } from 'src/app/services/auth.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
-  selector: 'app-cabecera',
-  templateUrl: './cabecera.component.html',
-  styleUrls: ['./cabecera.component.scss'],
+	selector: 'app-cabecera',
+	templateUrl: './cabecera.component.html',
+	styleUrls: ['./cabecera.component.scss'],
 })
 export class CabeceraComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private ngxLoaderService: NgxUiLoaderService
-  ) {}
+	constructor(private authService: AuthService, private ngxLoaderService: NgxUiLoaderService) {}
 
-  ngOnInit(): void {}
+	ngOnInit(): void {}
 
-  logOut() {
-    this.ngxLoaderService.start();
-    this.authService.cerrarSesion();
-    setTimeout(() => {
-      this.ngxLoaderService.stop();
-    }, 1000);
-  }
+	logOut() {
+		this.ngxLoaderService.start();
+		this.authService.cerrarSesion();
+		setTimeout(() => {
+			this.ngxLoaderService.stop();
+		}, 1000);
+	}
 }

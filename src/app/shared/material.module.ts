@@ -8,7 +8,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
 	imports: [
@@ -21,7 +22,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 		MatGridListModule,
 		MatDividerModule,
 		MatDatepickerModule,
-		MatNativeDateModule
+		MatNativeDateModule,
+		MatSelectModule,
 	],
 	exports: [
 		MatButtonModule,
@@ -33,7 +35,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 		MatGridListModule,
 		MatDividerModule,
 		MatDatepickerModule,
-		MatNativeDateModule
+		MatNativeDateModule,
+		MatSelectModule,
 	],
 })
 export class MaterialModule {}

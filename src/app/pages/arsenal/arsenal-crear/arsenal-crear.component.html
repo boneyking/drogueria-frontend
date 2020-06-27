@@ -1,0 +1,37 @@
+<div class="contenedor-formulario">
+	<form [formGroup]="formularioCrearArsenal" (submit)="guardarArsenal()" class="formulario">
+		<mat-card layout="row" layout-align="center center">
+			<mat-card-header>
+				<mat-card-title>Crear nuevo arsenal</mat-card-title>
+			</mat-card-header>
+			<mat-card-content>
+				<mat-form-field appearance="fill" class="campo">
+					<mat-label>Seleccione tipo de arsenal</mat-label>
+					<mat-select formControlName="arsenalTipo">
+						<mat-option *ngFor="let arsenalTipo of arsenalTipos" [value]="arsenalTipo.valor">
+							{{arsenalTipo.texto}}
+						</mat-option>
+					</mat-select>
+					<mat-hint>Indique tipo de arsenal</mat-hint>
+					<mat-error *ngIf="formularioCrearArsenal.touched && formularioCrearArsenal.get('arsenalTipo').invalid">
+						<span *ngFor="let error of formularioCrearArsenal.controls['arsenalTipo'].errors | keyvalue">
+							<span
+								*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span><br>
+						</span>
+					</mat-error>
+				</mat-form-field>
+				<app-input [formulario]="formularioCrearArsenal" [nombreCampo]="'nombreArsenal'"
+					[placeholder]="'Ej: Aciclovir'" [tipoInput]="'text'" [etiqueta]="'Nombre Arsenal'"
+					[hint]="'Indique nombre de arsenal'"></app-input>
+			</mat-card-content>
+		</mat-card>
+		<div style="float: right; margin-top: 10px;">
+			<button type="button" mat-button mat-raised-button color="accent" style="margin:5px;" (click)="cancelar()">
+				<mat-icon>cancel</mat-icon> Cancelar
+			</button>
+			<button mat-button mat-raised-button color="primary" style="margin:5px;">
+				<mat-icon>save</mat-icon> Guardar
+			</button>
+		</div>
+	</form>
+</div>

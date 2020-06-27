@@ -18,6 +18,11 @@ const routes: Routes = [
 				canActivate: [AuthGuard],
 				loadChildren: () => import('../pages/articulo/articulo.module').then((m) => m.ArticuloModule),
 			},
+			{
+				path: paginas.ARSENAL,
+				canActivate: [AuthGuard],
+				loadChildren: () => import('../pages/arsenal/arsenal.module').then((m) => m.ArsenalModule),
+			},
 		],
 	},
 	{
