@@ -20,11 +20,9 @@ export class AppComponent implements OnInit {
 	) {
 		this.translate.setDefaultLang('es');
 		this.translate.use('es');
+
+		this.websocketService.verificaSocket().subscribe(() => {});
 	}
 
-	ngOnInit(): void {
-		this.websocketService.listen('bienvenido').subscribe((data) => {
-			console.log(data);
-		});
-	}
+	ngOnInit(): void {}
 }

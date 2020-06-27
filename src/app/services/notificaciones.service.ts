@@ -23,4 +23,8 @@ export class NotificacionesService {
 				break;
 		}
 	}
+
+	cerrarTodos(){
+		this.toastrService.clear();
+	}
 }
