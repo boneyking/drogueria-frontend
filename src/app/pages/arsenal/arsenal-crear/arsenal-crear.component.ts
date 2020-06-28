@@ -43,6 +43,7 @@ export class ArsenalCrearComponent implements OnInit {
 	public orden: string;
 	public ordenarPor: string;
 	public pagina = environment.PAGINACION.PAGINA;
+	public textoBusqueda = '';
 
 	public columnas = { nombre: 'Nombre Arsenal', arsenalTipo: 'Tipo' };
 
@@ -72,10 +73,11 @@ export class ArsenalCrearComponent implements OnInit {
 
 	async avanzaPagina(event: PageEvent) {
 		this.cantidadResultadosBusqueda = event.pageSize;
-		await this.obtenerArsenalPaginado(event.pageIndex + 1, '');
+		await this.obtenerArsenalPaginado(event.pageIndex + 1, this.textoBusqueda);
 	}
 
 	obtenerArsenalPaginado(pagina: number, filtroBusqueda: string): void {
+		this.textoBusqueda = filtroBusqueda;
 		this.requestPaginada = new RequestPaginada();
 		this.requestPaginada.filtro = filtroBusqueda;
 		this.requestPaginada.cantidadResultados = this.cantidadResultadosBusqueda;
@@ -112,7 +114,7 @@ export class ArsenalCrearComponent implements OnInit {
 			this.arsenalService
 				.crearArsenal(arsenal)
 				.then((res: RespuestaSocket) => {
-					console.log(res);
+					this.inicializarFormulario();
 					this.ngxLoaderService.stop();
 				})
 				.catch((error) => {

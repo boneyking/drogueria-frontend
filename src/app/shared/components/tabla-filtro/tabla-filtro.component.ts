@@ -47,7 +47,9 @@ export class TablaFiltroComponent implements OnInit, OnChanges {
 
 	filtrarBusqueda(event: any) {
 		this.textoBusqueda = event.target.value;
-		if (event.target.value.length > 3) {
+		if (event.target.value.length >= 3) {
+			this.busqueda.emit(event.target.value);
+		} else if(event.target.value.length === 0){
 			this.busqueda.emit(event.target.value);
 		}
 	}

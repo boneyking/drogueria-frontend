@@ -35,10 +35,6 @@ export class ArticuloCrearComponent implements OnInit {
 		this.webSocketService.listen('arsenalCreado').subscribe((data: RespuestaSocket) => {
 			this.notificacionesService.mostrarMensaje('alert', 'Arsenal Creado', data.mensaje);
 		});
-
-		this.webSocketService.listen('arsenalNoCreado').subscribe((data: RespuestaSocket) => {
-			this.notificacionesService.mostrarMensaje('error', 'Arsenal No Creado', data.mensaje);
-		});
 	}
 
 	ngOnInit(): void {
