@@ -59,6 +59,7 @@ export class TablaFiltroComponent implements OnInit, OnChanges {
 		pageEvent.length = this.largoPaginacion;
 		pageEvent.pageIndex = 0;
 		pageEvent.pageSize = 5;
-		this.cambiaPagina.emit(pageEvent);
+		this.textoBusqueda = '';
+		this.busqueda.emit(this.textoBusqueda);
 	}
 }
