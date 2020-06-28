@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { InputComponent } from './components/formulario/input/input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerComponent } from './components/formulario/datepicker/datepicker.component';
+import { TablaFiltroComponent } from './components/tabla-filtro/tabla-filtro.component';
 
 const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 	bgsColor: '#00ACC1',
@@ -34,7 +35,7 @@ const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 	textPosition: 'center-center',
 };
 @NgModule({
-	declarations: [InputComponent, DatepickerComponent],
+	declarations: [InputComponent, DatepickerComponent, TablaFiltroComponent],
 	imports: [
 		CommonModule,
 		FormsModule,
@@ -43,6 +44,6 @@ const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 		NgxUiLoaderModule.forRoot(NGX_UI_LOADER_CONFIG),
 		TranslateModule,
 	],
-	exports: [MaterialModule, NgxUiLoaderModule, TranslateModule, InputComponent, DatepickerComponent],
+	exports: [MaterialModule, NgxUiLoaderModule, TranslateModule, InputComponent, DatepickerComponent,TablaFiltroComponent],
 })
 export class SharedModule {}

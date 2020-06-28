@@ -1,4 +1,11 @@
 <div class="contenedor-formulario">
+	<div class="formulario">
+		<app-tabla-filtro [items]="listadoArsenal" [placeholder]="'Buscar arsenal'"
+			[columnHeader]="columnas" [largoPaginacion]="arsenalRespuestaPaginada.totalDocumentos"
+			(cambiaPagina)="avanzaPagina($event)" [itemsPorPagina]="[5,10,15]" (busqueda)="obtenerArsenalPaginado(1, $event)"></app-tabla-filtro>
+	</div>
+</div>
+<!-- <div class="contenedor-formulario">
 	<form [formGroup]="formularioCrearArsenal" (submit)="guardarArsenal()" class="formulario">
 		<mat-card layout="row" layout-align="center center">
 			<mat-card-header>
@@ -34,4 +41,4 @@
 			</button>
 		</div>
 	</form>
-</div>
+</div> -->

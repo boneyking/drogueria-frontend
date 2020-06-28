@@ -1,5 +1,5 @@
-export class RespuestaPaginada<T>{
-	items: Array<T>;
+export class RespuestaPaginada<TRespuesta>{
+	items: Array<TRespuesta> = Array<TRespuesta>();
 	totalItems: number;
 	totalDocumentos: number;
 }

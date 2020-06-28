@@ -10,6 +10,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { RequestPaginada } from 'src/app/models/requests/request-paginada.model';
 import { RespuestaPaginada } from 'src/app/models/responses/respuesta-paginada.model';
 import { environment } from 'src/environments/environment';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
 	selector: 'app-arsenal-crear',
@@ -35,12 +36,15 @@ export class ArsenalCrearComponent implements OnInit {
 
 	public requestPaginada: RequestPaginada = new RequestPaginada();
 	public arsenalRespuestaPaginada: RespuestaPaginada<Arsenal> = new RespuestaPaginada<Arsenal>();
+	public listadoArsenal: Array<Arsenal> = new Array<Arsenal>();
 
 	public filtroBusqueda = '';
 	public cantidadResultadosBusqueda = environment.PAGINACION.CANTIDAD_RESULTADOS;
 	public orden: string;
 	public ordenarPor: string;
 	public pagina = environment.PAGINACION.PAGINA;
+
+	public columnas = { nombre: 'Nombre Arsenal', arsenalTipo: 'Tipo' };
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -63,7 +67,12 @@ export class ArsenalCrearComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.inicializarFormulario();
-		this.obtenerArsenalPaginado(this.pagina,'');
+		this.obtenerArsenalPaginado(this.pagina, '');
+	}
+
+	async avanzaPagina(event: PageEvent) {
+		this.cantidadResultadosBusqueda = event.pageSize;
+		await this.obtenerArsenalPaginado(event.pageIndex + 1, '');
 	}
 
 	obtenerArsenalPaginado(pagina: number, filtroBusqueda: string): void {
@@ -73,15 +82,13 @@ export class ArsenalCrearComponent implements OnInit {
 		this.requestPaginada.orden = 'asc';
 		this.requestPaginada.ordenarPor = 'nombre';
 		this.requestPaginada.pagina = pagina;
-
-		this.arsenalService
-			.obtenerArsenalPaginado(this.requestPaginada)
-			.then((res: RespuestaPaginada<Arsenal>) => {
-				this.arsenalRespuestaPaginada.items = res.items;
-				this.arsenalRespuestaPaginada.totalDocumentos = res.totalDocumentos;
-				this.arsenalRespuestaPaginada.totalItems = res.totalItems;
-			})
-			.catch((e) => console.log(e));
+		this.ngxLoaderService.start();
+		Promise.resolve(this.arsenalService.obtenerArsenalPaginado(this.requestPaginada)).then((res) => {
+			this.arsenalRespuestaPaginada = res;
+			this.listadoArsenal = new Array<Arsenal>();
+			this.listadoArsenal = res.items;
+			this.ngxLoaderService.stop();
+		});
 	}
 
 	inicializarFormulario(): void {
