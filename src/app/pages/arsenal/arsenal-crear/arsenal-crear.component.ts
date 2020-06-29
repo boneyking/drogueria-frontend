@@ -59,6 +59,7 @@ export class ArsenalCrearComponent implements OnInit {
 
 		this.webSocketService.listen('arsenalCreado').subscribe((data: RespuestaSocket) => {
 			this.notificacionesService.mostrarMensaje('success', 'Arsenal Creado', data.mensaje);
+			this.obtenerArsenalPaginado(1, '');
 		});
 
 		this.webSocketService.listen(`arsenalNoCreado_${informacionToken.id}`).subscribe((data: RespuestaSocket) => {
