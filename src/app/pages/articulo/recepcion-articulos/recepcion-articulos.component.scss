@@ -1,0 +1,32 @@
+.contenedor-formulario {
+	display: flex;
+	flex-direction: row;
+	min-width: 150px;
+	width: 100%;
+}
+
+.formulario {
+	margin:10px;
+	width: 100%;
+}
+.campo {
+	width: 100%;
+}
+
+.mat-card-subtitle {
+	margin-left: 10px;
+}
+
+@media (max-width: 600px) {
+	.contenedor-formulario {
+		display: flex;
+		flex-direction: column;
+		min-width: 150px;
+		max-width: 500px;
+		width: 100%;
+	}
+	.formulario {
+		margin:10px;
+		width: 100%;
+	}
+}
