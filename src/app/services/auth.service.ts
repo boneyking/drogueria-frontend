@@ -40,6 +40,6 @@ export class AuthService {
 			return expira < momentoActual ? ObservableOf(true) : ObservableOf(false);
 		}
 
-		return ObservableOf(false);
+		return ObservableOf(true);
 	}
 }
