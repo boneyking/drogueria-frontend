@@ -5,20 +5,16 @@
 	<mat-menu #menuArsenal="matMenu">
 		<a mat-menu-item routerLink="/arsenal/crearArsenal">
 			<mat-icon>input</mat-icon>
-			<span>Crear Arsenal</span>
+			<span>Ingreso Arsenal</span>
 		</a>
 	</mat-menu>
 	<button mat-button [matMenuTriggerFor]="menuArticulos">
-		<span>Articulos</span>
+		<span>Artículos</span>
 	</button>
 	<mat-menu #menuArticulos="matMenu">
-		<button mat-menu-item>
-			<mat-icon>list</mat-icon>
-			<span>Listado Articulos</span>
-		</button>
-		<a mat-menu-item routerLink="/articulo/crearArticulo">
+		<a mat-menu-item routerLink="/articulo/recepcionArticulos">
 			<mat-icon>input</mat-icon>
-			<span>Crear Articulo</span>
+			<span>Recepción de Artículos</span>
 		</a>
 	</mat-menu>
 	<button mat-button style="float:right" mat-raise-button mat-icon-button [matMenuTriggerFor]="menu"
