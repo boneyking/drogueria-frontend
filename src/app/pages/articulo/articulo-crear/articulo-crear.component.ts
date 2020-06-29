@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ArticuloService } from 'src/app/services/articulo.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -11,6 +11,9 @@ import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { RespuestaArticulo } from 'src/app/models/responses/respuesta-articulo.model';
 import { WebSocketService } from 'src/app/services/web-socket.service';
 import { RespuestaSocket } from 'src/app/models/responses/respuesta-socket.model';
+import { EventosSocket } from 'src/app/enums/eventos-socket.enum';
+import { TipoMensaje } from 'src/app/enums/tipo-mensaje.enum';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -18,9 +21,10 @@ import { RespuestaSocket } from 'src/app/models/responses/respuesta-socket.model
 	templateUrl: './articulo-crear.component.html',
 	styleUrls: ['./articulo-crear.component.scss'],
 })
-export class ArticuloCrearComponent implements OnInit {
+export class ArticuloCrearComponent implements OnInit, OnDestroy {
 	public formularioCrearArticulo: FormGroup;
 	public articuloExistente: Articulo;
+	private suscripciones: Subscription[] = [];
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -32,9 +36,14 @@ export class ArticuloCrearComponent implements OnInit {
 	) {
 		this.articuloExistente = new Articulo();
 
-		this.webSocketService.listen('arsenalCreado').subscribe((data: RespuestaSocket) => {
-			this.notificacionesService.mostrarMensaje('alert', 'Arsenal Creado', data.mensaje);
+		const arsenalCreado = this.webSocketService.listen(EventosSocket.ArsenalCreado).subscribe((data: RespuestaSocket) => {
+			this.notificacionesService.mostrarMensaje(TipoMensaje.Informacion, 'Arsenal Creado', data.mensaje);
 		});
+		this.suscripciones.push(arsenalCreado);
+	}
+
+	ngOnDestroy(): void {
+		this.suscripciones.forEach((s) => s.unsubscribe());
 	}
 
 	ngOnInit(): void {
@@ -60,7 +69,7 @@ export class ArticuloCrearComponent implements OnInit {
 				.then((res: RespuestaArticulo) => {
 					this.articuloExistente = res.articulo;
 					if (this.articuloExistente !== null) {
-						this.notificacionesService.mostrarMensaje('warning', 'Articulo', 'Código de barra ya existe para un articulo');
+						this.notificacionesService.mostrarMensaje(TipoMensaje.Advertencia, 'Articulo', 'Código de barra ya existe para un articulo');
 					} else {
 						this.articuloExistente = new Articulo();
 					}
@@ -75,7 +84,7 @@ export class ArticuloCrearComponent implements OnInit {
 
 	guardarArticulo(): void {
 		if (this.articuloExistente.id !== '') {
-			this.notificacionesService.mostrarMensaje('warning', 'Articulo', 'Código de barra ya existe para un articulo');
+			this.notificacionesService.mostrarMensaje(TipoMensaje.Advertencia, 'Articulo', 'Código de barra ya existe para un articulo');
 			this.formularioCrearArticulo.controls.codigoBarra.setValue('');
 			this.formularioCrearArticulo.controls.codigoBarra.updateValueAndValidity();
 		} else if (this.formularioCrearArticulo.valid) {
@@ -97,13 +106,13 @@ export class ArticuloCrearComponent implements OnInit {
 			this.articuloService
 				.crearArticulo(nuevoArticulo)
 				.then((articulo) => {
-					this.notificacionesService.mostrarMensaje('success', 'Crear articulo', 'Articulo creado');
+					this.notificacionesService.mostrarMensaje(TipoMensaje.Advertencia, 'Crear articulo', 'Articulo creado');
 					this.inicializarFormulario();
 					this.ngxLoaderService.stop();
 				})
 				.catch((error) => {
 					this.notificacionesService.mostrarMensaje(
-						'error',
+						TipoMensaje.Error,
 						'Error al crear articulo',
 						'Si error persiste, favor comunicarse con administrador.'
 					);

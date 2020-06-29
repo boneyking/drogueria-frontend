@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ArsenalService } from 'src/app/services/arsenal.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -11,13 +11,16 @@ import { RequestPaginada } from 'src/app/models/requests/request-paginada.model'
 import { RespuestaPaginada } from 'src/app/models/responses/respuesta-paginada.model';
 import { environment } from 'src/environments/environment';
 import { PageEvent } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
+import { EventosSocket } from 'src/app/enums/eventos-socket.enum';
+import { TipoMensaje } from 'src/app/enums/tipo-mensaje.enum';
 
 @Component({
 	selector: 'app-arsenal-crear',
 	templateUrl: './arsenal-crear.component.html',
 	styleUrls: ['./arsenal-crear.component.scss'],
 })
-export class ArsenalCrearComponent implements OnInit {
+export class ArsenalCrearComponent implements OnInit, OnDestroy {
 	public formularioCrearArsenal: FormGroup;
 	public arsenalTipos = [
 		{
@@ -47,6 +50,8 @@ export class ArsenalCrearComponent implements OnInit {
 
 	public columnas = { nombre: 'Nombre Arsenal', arsenalTipo: 'Tipo' };
 
+	private suscripciones: Subscription[] = [];
+
 	constructor(
 		private formBuilder: FormBuilder,
 		private arsenalService: ArsenalService,
@@ -57,14 +62,22 @@ export class ArsenalCrearComponent implements OnInit {
 	) {
 		const informacionToken = this.utilsService.decodificarToken(localStorage.getItem('token'));
 
-		this.webSocketService.listen('arsenalCreado').subscribe((data: RespuestaSocket) => {
-			this.notificacionesService.mostrarMensaje('success', 'Arsenal Creado', data.mensaje);
+		const arsenalCreado = this.webSocketService.listen(EventosSocket.ArsenalCreado).subscribe((data: RespuestaSocket) => {
+			this.notificacionesService.mostrarMensaje(TipoMensaje.Exito, 'Arsenal Creado', data.mensaje);
 			this.obtenerArsenalPaginado(1, '');
 		});
 
-		this.webSocketService.listen(`arsenalNoCreado_${informacionToken.id}`).subscribe((data: RespuestaSocket) => {
-			this.notificacionesService.mostrarMensaje('error', 'Arsenal No Creado', data.mensaje);
-		});
+		const arsenalNoCreado = this.webSocketService
+			.listen(`${EventosSocket.ArsenalNoCreado}_${informacionToken.id}`)
+			.subscribe((data: RespuestaSocket) => {
+				this.notificacionesService.mostrarMensaje(TipoMensaje.Error, 'Arsenal No Creado', data.mensaje);
+			});
+		this.suscripciones.push(arsenalCreado);
+		this.suscripciones.push(arsenalNoCreado);
+	}
+
+	ngOnDestroy(): void {
+		this.suscripciones.forEach((s) => s.unsubscribe());
 	}
 
 	ngOnInit(): void {
