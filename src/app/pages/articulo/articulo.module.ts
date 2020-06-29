@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ThemeModule } from 'src/app/theme/theme.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ArticuloCrearComponent } from './articulo-crear/articulo-crear.component';
+import { RecepcionArticulosComponent } from './recepcion-articulos/recepcion-articulos.component';
 
 const routes: Routes = [
 	{
@@ -13,13 +13,13 @@ const routes: Routes = [
 		component: ArticuloComponent,
 	},
 	{
-		path: 'crearArticulo',
-		component: ArticuloCrearComponent,
+		path: 'recepcionArticulos',
+		component: RecepcionArticulosComponent,
 	},
 ];
 
 @NgModule({
-	declarations: [ArticuloComponent, ArticuloCrearComponent],
+	declarations: [ArticuloComponent, RecepcionArticulosComponent],
 	imports: [CommonModule, RouterModule.forChild(routes), ThemeModule, SharedModule, ReactiveFormsModule],
 	exports: [ArticuloComponent],
 })
