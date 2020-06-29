@@ -8,6 +8,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import * as jwt_decode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
+import { TipoMensaje } from 'src/app/enums/tipo-mensaje.enum';
 
 @Component({
 	selector: 'app-login',
@@ -54,11 +55,11 @@ export class LoginComponent implements OnInit {
 		try {
 			this.authService.iniciarSesion(rut, password).then((res: RespuestaLogin) => {
 				if (res.token === '') {
-					this.notificacionesService.mostrarMensaje('error', 'Error', res.mensaje);
+					this.notificacionesService.mostrarMensaje(TipoMensaje.Error, 'Error', res.mensaje);
 				} else {
 					localStorage.setItem('token', res.token);
 					const infoToken = jwt_decode(res.token);
-					this.notificacionesService.mostrarMensaje('success', 'Bienvenido', infoToken.nombreUsuario);
+					this.notificacionesService.mostrarMensaje(TipoMensaje.Exito, 'Bienvenido', infoToken.nombreUsuario);
 					this.router.navigate(['/']);
 				}
 				this.ngxLoaderService.stop();
