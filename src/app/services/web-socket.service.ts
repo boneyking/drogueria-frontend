@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { NotificacionesService } from './notificaciones.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { TipoMensaje } from '../enums/tipo-mensaje.enum';
 
 @Injectable({
 	providedIn: 'root',
@@ -26,7 +27,7 @@ export class WebSocketService {
 				if (!this.socket.connected) {
 					this.ngxLoaderService.start();
 					this.notificacionesService.mostrarMensaje(
-						'error',
+						TipoMensaje.Error,
 						'Error',
 						'Se ha perdido la conexión con el servidor.',
 						this.opcionesError
@@ -38,7 +39,7 @@ export class WebSocketService {
 				this.socket.on('disconnect', () => {
 					this.ngxLoaderService.start();
 					this.notificacionesService.mostrarMensaje(
-						'error',
+						TipoMensaje.Error,
 						'Error',
 						'Se ha perdido la conexión con el servidor.',
 						this.opcionesError
@@ -54,7 +55,7 @@ export class WebSocketService {
 
 				this.socket.on('reconnect', () => {
 					setTimeout(() => {
-						this.notificacionesService.mostrarMensaje('success', 'Alerta', 'Se ha reconectado con el servidor.', {
+						this.notificacionesService.mostrarMensaje(TipoMensaje.Exito, 'Alerta', 'Se ha reconectado con el servidor.', {
 							timeOut: 1500,
 							positionClass: this.opcionesError.positionClass,
 						});
