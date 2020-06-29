@@ -1,8 +1,11 @@
 <mat-form-field style="width: 100%;">
 	<mat-label>Buscar</mat-label>
-	<input matInput [placeholder]="placeholder" (keyup)="filtrarBusqueda($event)"
-		[disabled]="items.length === 0 && textoBusqueda.length > 0" #input>
-	<mat-icon matSuffix>search</mat-icon>
+	<input matInput [placeholder]="placeholder" (keyup)="filtrarBusqueda($event)" #input>
+	<mat-icon matSuffix *ngIf="input.value.length === 0">search</mat-icon>
+	<button mat-button *ngIf="input.value.length > 0" matSuffix mat-icon-button aria-label="Clear"
+		(click)="limpiarBusqueda(); input.value=''">
+		<mat-icon>close</mat-icon>
+	</button>
 </mat-form-field>
 <div *ngIf="items.length > 0">
 	<table mat-table *ngIf="dataSource" [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 100%;">
