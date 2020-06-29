@@ -18,13 +18,16 @@ export class NotificacionesService {
 			case 'success':
 				this.toastrService.success(message, title, options);
 				break;
+			case 'warning':
+				this.toastrService.success(message, title, options);
+				break;
 			default:
 				this.toastrService.info(message, title, options);
 				break;
 		}
 	}
 
-	cerrarTodos(){
+	cerrarTodos() {
 		this.toastrService.clear();
 	}
 }
