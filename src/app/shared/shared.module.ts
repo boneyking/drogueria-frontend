@@ -7,6 +7,7 @@ import { InputComponent } from './components/formulario/input/input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerComponent } from './components/formulario/datepicker/datepicker.component';
 import { TablaFiltroComponent } from './components/tabla-filtro/tabla-filtro.component';
+import { AutocompleteComponent } from './components/formulario/autocomplete/autocomplete.component';
 
 const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 	bgsColor: '#00ACC1',
@@ -35,7 +36,7 @@ const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 	textPosition: 'center-center',
 };
 @NgModule({
-	declarations: [InputComponent, DatepickerComponent, TablaFiltroComponent],
+	declarations: [InputComponent, DatepickerComponent, TablaFiltroComponent, AutocompleteComponent],
 	imports: [
 		CommonModule,
 		FormsModule,
@@ -44,6 +45,14 @@ const NGX_UI_LOADER_CONFIG: NgxUiLoaderConfig = {
 		NgxUiLoaderModule.forRoot(NGX_UI_LOADER_CONFIG),
 		TranslateModule,
 	],
-	exports: [MaterialModule, NgxUiLoaderModule, TranslateModule, InputComponent, DatepickerComponent,TablaFiltroComponent],
+	exports: [
+		MaterialModule,
+		NgxUiLoaderModule,
+		TranslateModule,
+		InputComponent,
+		DatepickerComponent,
+		TablaFiltroComponent,
+		AutocompleteComponent,
+	],
 })
 export class SharedModule {}

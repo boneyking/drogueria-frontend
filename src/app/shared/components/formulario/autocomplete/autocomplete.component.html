@@ -1,0 +1,17 @@
+<mat-form-field appearance="fill" [formGroup]="formulario">
+	<mat-label>{{etiqueta}}</mat-label>
+	<input type="text" formControlName="rutProveedor" formControlName="{{nombreCampo}}" [placeholder]="placeholder"
+		matInput [matAutocomplete]="auto" (keyup)="buscarAutoCompletado($event)">
+	<mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarOpcion($event)">
+		<mat-option *ngFor="let opcion of listadoOpciones" [value]="opcion[nombreValorOpcion]">
+			{{opcion[textoOpcion]}}
+		</mat-option>
+	</mat-autocomplete>
+	<mat-hint>{{hint}}</mat-hint>
+	<mat-error *ngIf="formulario.touched && formulario.get(nombreCampo).invalid">
+		<span *ngFor="let error of formulario.controls[nombreCampo].errors | keyvalue">
+			<span
+				*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span><br>
+		</span>
+	</mat-error>
+</mat-form-field>

@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
 	imports: [
@@ -28,6 +29,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 		MatSelectModule,
 		MatTableModule,
 		MatPaginatorModule,
+		MatAutocompleteModule,
 	],
 	exports: [
 		MatButtonModule,
@@ -43,6 +45,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 		MatSelectModule,
 		MatTableModule,
 		MatPaginatorModule,
+		MatAutocompleteModule,
 	],
 })
 export class MaterialModule {}

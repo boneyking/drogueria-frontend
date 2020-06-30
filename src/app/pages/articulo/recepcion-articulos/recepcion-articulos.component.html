@@ -1,1 +1,57 @@
-<p>recepcion-articulos works!</p>
+<div class="contenedor-formulario">
+	<form [formGroup]="formularioRecepcion" (submit)="submit()">
+		<mat-card layout="row" layout-align="center center">
+			<mat-card-header>
+				<mat-card-title>Recepción de artículos</mat-card-title>
+			</mat-card-header>
+			<mat-card-content>
+				<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'rutProveedor'"
+					[placeholder]="'Ej: 11.111.111-1'" [etiqueta]="'Rut Proveedor'" [hint]="'Indique rut de proveedor'"
+					[nombreValorOpcion]="'rut'" [textoOpcion]="'rut'" [listadoOpciones]="listadoProveedores"
+					(textoABuscar)="buscarProveedorPorRut($event)"
+					(opcionSeleccionada)="opcionSeleccionada($event, 'rut')">
+				</app-autocomplete>
+				<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'nombreProveedor'"
+					[placeholder]="'Ej: Laboratorio'" [etiqueta]="'Nombre Proveedor'"
+					[hint]="'Indique nombre de proveedor'" [nombreValorOpcion]="'nombre'" [textoOpcion]="'nombre'"
+					[listadoOpciones]="listadoProveedores" (textoABuscar)="buscarProveedorPorNombre($event)"
+					(opcionSeleccionada)="opcionSeleccionada($event, 'nombre')">
+				</app-autocomplete>
+				<mat-form-field appearance="fill" style="width: 100%;">
+					<mat-label>Documento</mat-label>
+					<mat-select formControlName="documentoTipo">
+						<mat-option [value]="'Factura'">Factura</mat-option>
+						<mat-option [value]="'GuiaDespacho'">Guía despacho</mat-option>
+						<mat-option [value]="'GuiaInterna'">Guía interna</mat-option>
+					</mat-select>
+					<mat-hint>Indique documento</mat-hint>
+					<mat-error *ngIf="formularioRecepcion.touched && formularioRecepcion.get('documentoTipo').invalid">
+						<span *ngFor="let error of formularioRecepcion.controls['documentoTipo'].errors | keyvalue">
+							<span
+								*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span><br>
+						</span>
+					</mat-error>
+				</mat-form-field>
+				<app-input [formulario]="formularioRecepcion" [nombreCampo]="'identificadorDocumento'"
+					[placeholder]="'Ej: 121212'" [tipoInput]="'text'" [etiqueta]="'Número documento'"
+					[hint]="'Indique número de documento'"></app-input>
+				<mat-form-field appearance="fill" style="width: 100%;">
+					<mat-label>Origen</mat-label>
+					<mat-select formControlName="origen">
+						<mat-option [value]="'Cenabast'">Cenabast</mat-option>
+						<mat-option [value]="'CompraDirecta'">Compra directa</mat-option>
+						<mat-option [value]="'Donacion'">Donacion</mat-option>
+						<mat-option [value]="'Prestamo'">Prestamo</mat-option>
+					</mat-select>
+					<mat-hint>Indique documento</mat-hint>
+					<mat-error *ngIf="formularioRecepcion.touched && formularioRecepcion.get('origen').invalid">
+						<span *ngFor="let error of formularioRecepcion.controls['origen'].errors | keyvalue">
+							<span
+								*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span><br>
+						</span>
+					</mat-error>
+				</mat-form-field>
+			</mat-card-content>
+		</mat-card>
+	</form>
+</div>

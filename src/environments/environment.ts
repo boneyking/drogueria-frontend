@@ -10,7 +10,8 @@ export const environment = {
   PAGINACION: {
 	  CANTIDAD_RESULTADOS: 5,
 	  PAGINA: 1
-  }
+  },
+  IVA: 1.19
 };
 
 /*
