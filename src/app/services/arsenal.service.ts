@@ -23,6 +23,10 @@ export class ArsenalService {
 		return this.http.post<RespuestaPaginada<Arsenal>>(this.URL_API + '/arsenal/obtenerArsenalPaginado', paginada);
 	}
 
+	private consultaObtenerArsenalPorNombre(nombreArsenal: string): Observable<RespuestaPaginada<Arsenal>> {
+		return this.http.get<RespuestaPaginada<Arsenal>>(this.URL_API + '/arsenal/buscarArsenalPorNombre/' + encodeURIComponent(nombreArsenal));
+	}
+
 	public obtenerArsenalPaginado(requestPaginada: RequestPaginada):Promise<RespuestaPaginada<Arsenal>>{
 		const resultado = this.consultaObtenerArsenalPaginado(requestPaginada)
 		.pipe(
@@ -30,7 +34,17 @@ export class ArsenalService {
 				return res;
 			})
 		).toPromise();
+		return resultado;
+	}
 
+	public buscarArsenalPorNombre(nombreArsenal: string): Promise<RespuestaPaginada<Arsenal>> {
+		const resultado = this.consultaObtenerArsenalPorNombre(nombreArsenal)
+			.pipe(
+				map((res) => {
+					return res;
+				})
+			)
+			.toPromise();
 		return resultado;
 	}
 }

@@ -19,7 +19,7 @@ export class NotificacionesService {
 				this.toastrService.success(message, title, options);
 				break;
 			case 'warning':
-				this.toastrService.success(message, title, options);
+				this.toastrService.warning(message, title, options);
 				break;
 			default:
 				this.toastrService.info(message, title, options);

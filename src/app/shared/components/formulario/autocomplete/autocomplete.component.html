@@ -1,9 +1,9 @@
 <mat-form-field appearance="fill" [formGroup]="formulario">
 	<mat-label>{{etiqueta}}</mat-label>
 	<input type="text" formControlName="rutProveedor" formControlName="{{nombreCampo}}" [placeholder]="placeholder"
-		matInput [matAutocomplete]="auto" (keyup)="buscarAutoCompletado($event)">
+		matInput [matAutocomplete]="auto">
 	<mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarOpcion($event)">
-		<mat-option *ngFor="let opcion of listadoOpciones" [value]="opcion[nombreValorOpcion]">
+		<mat-option *ngFor="let opcion of listadoOpciones | async" [value]="opcion[nombreValorOpcion]">
 			{{opcion[textoOpcion]}}
 		</mat-option>
 	</mat-autocomplete>

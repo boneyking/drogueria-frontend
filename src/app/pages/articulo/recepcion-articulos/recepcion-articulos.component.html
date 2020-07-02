@@ -9,13 +9,13 @@
 					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'rutProveedor'"
 						[placeholder]="'Ej: 11.111.111-1'" [etiqueta]="'Rut Proveedor'"
 						[hint]="'Indique rut de proveedor'" [nombreValorOpcion]="'rut'" [textoOpcion]="'rut'"
-						[listadoOpciones]="listadoProveedores" (textoABuscar)="buscarProveedorPorRut($event)"
+						[listadoOpciones]="listadoProveedoresPorRut"
 						(opcionSeleccionada)="opcionSeleccionada($event, 'rut')">
 					</app-autocomplete>
 					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'nombreProveedor'"
 						[placeholder]="'Ej: Laboratorio'" [etiqueta]="'Nombre Proveedor'"
 						[hint]="'Indique nombre de proveedor'" [nombreValorOpcion]="'nombre'" [textoOpcion]="'nombre'"
-						[listadoOpciones]="listadoProveedores" (textoABuscar)="buscarProveedorPorNombre($event)"
+						[listadoOpciones]="listadoProveedoresPorNombre"
 						(opcionSeleccionada)="opcionSeleccionada($event, 'nombre')">
 					</app-autocomplete>
 					<mat-form-field appearance="fill" style="width: 100%;">
@@ -59,7 +59,50 @@
 		<div class="formulario">
 			<mat-card layout="row" layout-align="center center">
 				<mat-card-content>
-					<h1>hola</h1>
+					<app-input
+						[formulario]="formularioRecepcion"
+						[nombreCampo]="'codigoBarraArticulo'"
+						[placeholder]="'Ej: 111111111'"
+						[tipoInput]="'text'"
+						[etiqueta]="'Código de barra'"
+						[hint]="'Indique código de barra'"
+						(valorInput)="verificarExistenciaCodigoBarra($event)"
+						onPaste="return false"></app-input>
+					<app-input
+						[formulario]="formularioRecepcion"
+						[nombreCampo]="'cantidadArticulo'"
+						[placeholder]="'Ej: 1'"
+						[tipoInput]="'number'"
+						[etiqueta]="'Cantidad'"
+						[hint]="'Indique cantidad'"></app-input>
+					<app-autocomplete
+						[formulario]="formularioRecepcion"
+						[nombreCampo]="'descripcionArticulo'"
+						[placeholder]="'Ej: PARACETAMOL 500 MG COMPRIMIDO'" [etiqueta]="'Descripción'"
+						[hint]="'Indique descripción de artículo'" [nombreValorOpcion]="'nombre'" [textoOpcion]="'nombre'"
+						[listadoOpciones]="listadoArsenalPorNombre"
+						(opcionSeleccionada)="arsenalSeleccionado()">
+					</app-autocomplete>
+					<app-input
+						[formulario]="formularioRecepcion"
+						[nombreCampo]="'identificadorLoteArticulo'"
+						[placeholder]="'Ej: 1903a1008'"
+						[tipoInput]="'text'"
+						[etiqueta]="'Lote'"
+						[hint]="'Indique identificador de lote'"></app-input>
+					<app-datepicker
+						[formulario]="formularioRecepcion"
+						[nombreCampo]="'fechaVencimientoArticulo'"
+						[placeholder]="'Indique fecha vencimiento'"
+						[etiqueta]="'Fecha vencimiento'"
+						[hint]="'Indique fecha vencimiento'"></app-datepicker>
+					<app-input
+						[formulario]="formularioRecepcion"
+						[nombreCampo]="'valorUnitarioArticulo'"
+						[placeholder]="'Ej: 1'"
+						[tipoInput]="'number'"
+						[etiqueta]="'Valor unitario'"
+						[hint]="'Indique valor unitario'"></app-input>
 				</mat-card-content>
 			</mat-card>
 		</div>

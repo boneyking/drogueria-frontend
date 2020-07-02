@@ -91,13 +91,13 @@ export class ArticuloCrearComponent implements OnInit, OnDestroy {
 			this.ngxLoaderService.start();
 
 			const nuevoArticulo = new Articulo();
-			nuevoArticulo.codigoBarra = this.formularioCrearArticulo.controls.codigoBarra.value;
-			nuevoArticulo.nombre = this.formularioCrearArticulo.controls.nombre.value;
-			nuevoArticulo.descripcion = this.formularioCrearArticulo.controls.descripcion.value;
-			nuevoArticulo.cantidad = this.formularioCrearArticulo.controls.cantidad.value;
-			nuevoArticulo.lote.id = uuidv4();
-			nuevoArticulo.lote.identificador = this.formularioCrearArticulo.controls.identificadorLote.value;
-			nuevoArticulo.lote.fechaVencimiento = this.formularioCrearArticulo.controls.fechaVencimientoLote.value;
+			// nuevoArticulo.codigoBarra = this.formularioCrearArticulo.controls.codigoBarra.value;
+			// nuevoArticulo.nombre = this.formularioCrearArticulo.controls.nombre.value;
+			// nuevoArticulo.descripcion = this.formularioCrearArticulo.controls.descripcion.value;
+			// nuevoArticulo.cantidad = this.formularioCrearArticulo.controls.cantidad.value;
+			// nuevoArticulo.lote.id = uuidv4();
+			// nuevoArticulo.lote.identificador = this.formularioCrearArticulo.controls.identificadorLote.value;
+			// nuevoArticulo.lote.fechaVencimiento = this.formularioCrearArticulo.controls.fechaVencimientoLote.value;
 
 			const informacionToken = this.utilsService.decodificarToken(localStorage.getItem('token'));
 			nuevoArticulo.responsable.nombre = informacionToken.nombreUsuario;
