@@ -1,33 +1,58 @@
-.contenedor-formulario {
+.contenedor{
+	width: 100%;
+	// min-height: 300px;
 	display: flex;
-	flex-direction: row;
-	min-width: 150px;
-	// max-width: 500px;
-	width: 100%;
+	flex-flow: row wrap;
+
+}
+.elemento{
+	// width: 200px;
+	margin-left: 5px;
 }
 
-.formulario {
-	margin:10px;
-	width: 50%;
-}
-.campo {
-	width: 100%;
+.mat-card{
+	margin-bottom: 20px;
 }
 
-.mat-card-subtitle {
-	margin-left: 10px;
-}
+// .contenedor-formulario {
+// 	display: flex;
+// 	flex-direction: column;
+// }
+// .contenedor-formulario > * {
+// 	width: 100%;
+// }
 
-@media (max-width: 600px) {
-	.contenedor-formulario {
-		display: flex;
-		flex-direction: column;
-		min-width: 150px;
-		max-width: 500px;
-		width: 100%;
-	}
-	.formulario {
-		margin:10px;
-		width: 100%;
-	}
-}
+
+// .contenedor-formulario {
+// 	display: flex;
+// 	flex-direction: row;
+// 	min-width: 150px;
+// 	// max-width: 500px;
+// 	width: 100%;
+// }
+
+// .formulario {
+// 	margin:10px;
+// 	width: 50%;
+// }
+// .campo {
+// 	width: 100%;
+// }
+
+// .mat-card-subtitle {
+// 	margin-left: 10px;
+// }
+
+// @media (max-width: 600px) {
+// 	.contenedor-formulario {
+// 		display: flex;
+// 		flex-direction: column;
+// 		min-width: 150px;
+// 		max-width: 500px;
+// 		width: 100%;
+// 	}
+// 	.formulario {
+// 		margin:10px;
+// 		width: 100%;
+// 	}
+// }

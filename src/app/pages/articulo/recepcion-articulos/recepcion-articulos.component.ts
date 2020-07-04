@@ -29,6 +29,7 @@ export class RecepcionArticulosComponent implements OnInit {
 	public listadoArsenalPorNombre: Observable<Array<Arsenal>>;
 	public listadoArsenal: Array<Arsenal>;
 	public existeArsenal = false;
+	public fechaMinima = new Date();
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -50,16 +51,16 @@ export class RecepcionArticulosComponent implements OnInit {
 			// fechaIngreso: new FormControl(null, [Validators.required]), // fecha actual y hora
 			nombreProveedor: new FormControl(null, [Validators.required, Validators.minLength(3)]),
 			rutProveedor: new FormControl(null, [Validators.required, Validators.minLength(1), Validadores.rutValido]),
-			documentoTipo: new FormControl(null, [Validators.required]),
+			documentoTipo: new FormControl('Factura', [Validators.required]),
 			identificadorDocumento: new FormControl(null, [Validators.required]),
-			origen: new FormControl(null, [Validators.required]),
+			origen: new FormControl('Cenabast', [Validators.required]),
 			// montoTotal: new FormControl(null), // se genera de la suma de los valores netos y el iva
 			codigoBarraArticulo: new FormControl(null, [Validators.required]),
 			descripcionArticulo: new FormControl(null, [Validators.required]),
 			cantidadArticulo: new FormControl(null, [Validators.required, Validators.min(1)]),
 			identificadorLoteArticulo: new FormControl(null, [Validators.required]),
-			fechaVencimientoArticulo: new FormControl(null, [Validators.required]),
-			valorUnitarioArticulo: new FormControl(null, [Validators.required]),
+			fechaVencimientoArticulo: new FormControl((new Date()).toISOString(), [Validators.required]),
+			valorUnitarioArticulo: new FormControl('1', [Validators.required, Validators.min(1)]),
 		});
 
 		this.listadoProveedoresPorRut = this.formularioRecepcion.get('rutProveedor').valueChanges.pipe(

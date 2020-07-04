@@ -1,24 +1,28 @@
 <form [formGroup]="formularioRecepcion" (submit)="submit()">
-	<div class="contenedor-formulario">
-		<div class="formulario">
-			<mat-card layout="row" layout-align="center center">
-				<mat-card-header>
-					<mat-card-title>Recepción de artículos</mat-card-title>
-				</mat-card-header>
-				<mat-card-content>
+	<mat-card>
+		<mat-card-header>
+			<mat-card-subtitle>Información documento</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<div class="contenedor">
+				<div class="elemento">
 					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'rutProveedor'"
 						[placeholder]="'Ej: 11.111.111-1'" [etiqueta]="'Rut Proveedor'"
 						[hint]="'Indique rut de proveedor'" [nombreValorOpcion]="'rut'" [textoOpcion]="'rut'"
 						[listadoOpciones]="listadoProveedoresPorRut"
 						(opcionSeleccionada)="opcionSeleccionada($event, 'rut')">
 					</app-autocomplete>
+				</div>
+				<div class="elemento">
 					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'nombreProveedor'"
 						[placeholder]="'Ej: Laboratorio'" [etiqueta]="'Nombre Proveedor'"
 						[hint]="'Indique nombre de proveedor'" [nombreValorOpcion]="'nombre'" [textoOpcion]="'nombre'"
 						[listadoOpciones]="listadoProveedoresPorNombre"
 						(opcionSeleccionada)="opcionSeleccionada($event, 'nombre')">
 					</app-autocomplete>
-					<mat-form-field appearance="fill" style="width: 100%;">
+				</div>
+				<div class="elemento">
+					<mat-form-field appearance="fill">
 						<mat-label>Documento</mat-label>
 						<mat-select formControlName="documentoTipo">
 							<mat-option [value]="'Factura'">Factura</mat-option>
@@ -34,9 +38,13 @@
 							</span>
 						</mat-error>
 					</mat-form-field>
+				</div>
+				<div class="elemento">
 					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'identificadorDocumento'"
 						[placeholder]="'Ej: 121212'" [tipoInput]="'text'" [etiqueta]="'Número documento'"
 						[hint]="'Indique número de documento'"></app-input>
+				</div>
+				<div class="elemento">
 					<mat-form-field appearance="fill" style="width: 100%;">
 						<mat-label>Origen</mat-label>
 						<mat-select formControlName="origen">
@@ -53,58 +61,107 @@
 							</span>
 						</mat-error>
 					</mat-form-field>
-				</mat-card-content>
-			</mat-card>
-		</div>
-		<div class="formulario">
-			<mat-card layout="row" layout-align="center center">
-				<mat-card-content>
-					<app-input
-						[formulario]="formularioRecepcion"
-						[nombreCampo]="'codigoBarraArticulo'"
-						[placeholder]="'Ej: 111111111'"
-						[tipoInput]="'text'"
-						[etiqueta]="'Código de barra'"
-						[hint]="'Indique código de barra'"
-						(valorInput)="verificarExistenciaCodigoBarra($event)"
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card>
+		<mat-card-header>
+			<mat-card-subtitle>Información artículo</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<div class="contenedor">
+				<div class="elemento">
+					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'codigoBarraArticulo'"
+						[placeholder]="'Ej: 111111111'" [tipoInput]="'text'" [etiqueta]="'Código de barra'"
+						[hint]="'Indique código de barra'" (valorInput)="verificarExistenciaCodigoBarra($event)"
 						onPaste="return false"></app-input>
-					<app-input
-						[formulario]="formularioRecepcion"
-						[nombreCampo]="'cantidadArticulo'"
-						[placeholder]="'Ej: 1'"
-						[tipoInput]="'number'"
-						[etiqueta]="'Cantidad'"
+				</div>
+				<div class="elemento">
+					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'cantidadArticulo'"
+						[placeholder]="'Ej: 1'" [tipoInput]="'number'" [etiqueta]="'Cantidad'"
 						[hint]="'Indique cantidad'"></app-input>
-					<app-autocomplete
-						[formulario]="formularioRecepcion"
-						[nombreCampo]="'descripcionArticulo'"
+				</div>
+				<div class="elemento">
+					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'descripcionArticulo'"
 						[placeholder]="'Ej: PARACETAMOL 500 MG COMPRIMIDO'" [etiqueta]="'Descripción'"
-						[hint]="'Indique descripción de artículo'" [nombreValorOpcion]="'nombre'" [textoOpcion]="'nombre'"
-						[listadoOpciones]="listadoArsenalPorNombre"
-						>
+						[hint]="'Indique descripción de artículo'" [nombreValorOpcion]="'nombre'"
+						[textoOpcion]="'nombre'" [listadoOpciones]="listadoArsenalPorNombre">
 					</app-autocomplete>
-					<app-input
-						[formulario]="formularioRecepcion"
-						[nombreCampo]="'identificadorLoteArticulo'"
-						[placeholder]="'Ej: 1903a1008'"
-						[tipoInput]="'text'"
-						[etiqueta]="'Lote'"
+				</div>
+				<div class="elemento">
+					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'identificadorLoteArticulo'"
+						[placeholder]="'Ej: 1903a1008'" [tipoInput]="'text'" [etiqueta]="'Lote'"
 						[hint]="'Indique identificador de lote'"></app-input>
-					<app-datepicker
-						[formulario]="formularioRecepcion"
-						[nombreCampo]="'fechaVencimientoArticulo'"
-						[placeholder]="'Indique fecha vencimiento'"
-						[etiqueta]="'Fecha vencimiento'"
-						[hint]="'Indique fecha vencimiento'"></app-datepicker>
-					<app-input
-						[formulario]="formularioRecepcion"
-						[nombreCampo]="'valorUnitarioArticulo'"
-						[placeholder]="'Ej: 1'"
-						[tipoInput]="'number'"
-						[etiqueta]="'Valor unitario'"
+				</div>
+				<div class="elemento">
+					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'valorUnitarioArticulo'"
+						[placeholder]="'Ej: 1'" [tipoInput]="'number'" [etiqueta]="'Valor unitario'"
 						[hint]="'Indique valor unitario'"></app-input>
-				</mat-card-content>
-			</mat-card>
-		</div>
-	</div>
+				</div>
+				<div class="elemento">
+					<app-datepicker [formulario]="formularioRecepcion" [nombreCampo]="'fechaVencimientoArticulo'"
+						[placeholder]="'Indique fecha vencimiento'" [etiqueta]="'Fecha vencimiento'"
+						[hint]="'Indique fecha vencimiento'" [fechaMinima]="fechaMinima"></app-datepicker>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card>
+		<mat-card-header>
+			<mat-card-subtitle>
+				Artículos ingresados
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+
+		</mat-card-content>
+	</mat-card>
 </form>
+
+
+
+<!-- <div class="contenedor">
+	<form [formGroup]="formularioRecepcion" (submit)="submit()">
+		<mat-card layout="row" layout-align="center center">
+			<mat-card-header>
+				<mat-card-title>Recepción de artículos</mat-card-title>
+			</mat-card-header>
+			<mat-card-content> -->
+
+
+<!-- <app-input [formulario]="formularioRecepcion" [nombreCampo]="'identificadorDocumento'"
+					[placeholder]="'Ej: 121212'" [tipoInput]="'text'" [etiqueta]="'Número documento'"
+					[hint]="'Indique número de documento'"></app-input>
+				<mat-form-field appearance="fill" style="width: 100%;">
+					<mat-label>Origen</mat-label>
+					<mat-select formControlName="origen">
+						<mat-option [value]="'Cenabast'">Cenabast</mat-option>
+						<mat-option [value]="'CompraDirecta'">Compra directa</mat-option>
+						<mat-option [value]="'Donacion'">Donacion</mat-option>
+						<mat-option [value]="'Prestamo'">Prestamo</mat-option>
+					</mat-select>
+					<mat-hint>Indique documento</mat-hint>
+					<mat-error *ngIf="formularioRecepcion.touched && formularioRecepcion.get('origen').invalid">
+						<span *ngFor="let error of formularioRecepcion.controls['origen'].errors | keyvalue">
+							<span
+								*ngIf="error.key">{{ 'ERROR_MESSAGES.'+(error.key | uppercase) | translate:{ value : (error.value.requiredLength || error.value.max || error.value.min) } }}</span><br>
+						</span>
+					</mat-error>
+				</mat-form-field> -->
+<!-- </mat-card-content>
+			<mat-card-content>
+				<mat-card-subtitle>Información Lote</mat-card-subtitle>
+
+			</mat-card-content>
+		</mat-card> -->
+<!-- <div style="float: right; margin-top: 10px;">
+			<button type="button" mat-button mat-raised-button color="accent" style="margin:5px;">
+				<mat-icon>cancel</mat-icon> Cancelar
+			</button>
+			<button mat-button mat-raised-button color="primary" style="margin:5px;" >
+				<mat-icon>save</mat-icon> Guardar
+			</button>
+		</div> -->
+<!-- </form>
+</div> -->

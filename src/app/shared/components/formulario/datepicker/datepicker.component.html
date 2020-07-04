@@ -1,5 +1,6 @@
 <mat-form-field [formGroup]="formulario" appearance="fill">
-	<input matInput [matDatepicker]="picker" [placeholder]="placeholder" [formControlName]="nombreCampo" />
+	<input matInput [matDatepicker]="picker" [placeholder]="placeholder" [formControlName]="nombreCampo"
+		[min]="fechaMinima" />
 	<mat-datepicker-toggle matSuffix [for]="picker">
 		<mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
 	</mat-datepicker-toggle>
