@@ -5,7 +5,6 @@ import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { Validadores } from 'src/app/utils/validadores';
 import { UtilsService } from 'src/app/services/utils.service';
 import { ProveedorService } from 'src/app/services/proveedor.service';
-import { RequestPaginada } from 'src/app/models/requests/request-paginada.model';
 import { Proveedor } from 'src/app/models/proveedor.model';
 import { ArticuloService } from 'src/app/services/articulo.service';
 import { RespuestaArticulo } from 'src/app/models/responses/respuesta-articulo.model';
@@ -15,7 +14,6 @@ import { Observable } from 'rxjs';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { RespuestaPaginada } from 'src/app/models/responses/respuesta-paginada.model';
-import { element } from 'protractor';
 import { EMPTY } from 'rxjs';
 
 @Component({
@@ -35,11 +33,10 @@ export class RecepcionArticulosComponent implements OnInit {
 	constructor(
 		private formBuilder: FormBuilder,
 		private ngxLoaderService: NgxUiLoaderService,
-		private notificacionesService: NotificacionesService,
-		private utilsService: UtilsService,
 		private proveedorService: ProveedorService,
 		private articuloService: ArticuloService,
-		private arsenalService: ArsenalService
+		private arsenalService: ArsenalService,
+		private notificacionesService: NotificacionesService
 	) {}
 
 	ngOnInit(): void {
@@ -77,7 +74,7 @@ export class RecepcionArticulosComponent implements OnInit {
 
 		this.listadoArsenalPorNombre = this.formularioRecepcion.get('descripcionArticulo').valueChanges.pipe(
 			debounceTime(300),
-			switchMap((value) =>  this.buscarArsenalPorNombre(value))
+			switchMap((value) => this.buscarArsenalPorNombre(value))
 		);
 	}
 
@@ -91,7 +88,12 @@ export class RecepcionArticulosComponent implements OnInit {
 				})
 			);
 		} else {
-			return EMPTY;
+			return from(this.proveedorService.buscarProveedorPorRut('6')).pipe(
+				map((res: RespuestaPaginada<Proveedor>) => {
+					this.listadoProveedores = res.items;
+					return res.items;
+				})
+			);
 		}
 	}
 
@@ -105,7 +107,12 @@ export class RecepcionArticulosComponent implements OnInit {
 				})
 			);
 		} else {
-			return EMPTY;
+			return from(this.proveedorService.buscarProveedorPorNombre('a')).pipe(
+				map((res: RespuestaPaginada<Proveedor>) => {
+					this.listadoProveedores = res.items;
+					return res.items;
+				})
+			);
 		}
 	}
 
@@ -115,32 +122,26 @@ export class RecepcionArticulosComponent implements OnInit {
 		if (event.length > 0) {
 			return from(this.arsenalService.buscarArsenalPorNombre(event)).pipe(
 				map((res: RespuestaPaginada<Arsenal>) => {
+					if (res.items.length === 0) {
+						this.notificacionesService.mostrarMensaje(
+							'error',
+							'Arsenal no encontrado',
+							`No existe el arsenal: ${event}`
+						);
+						this.formularioRecepcion.controls.descripcionArticulo.setValue('');
+					}
 					this.listadoArsenal = res.items;
 					return res.items;
 				})
 			);
 		} else {
-			return EMPTY;
+			return from(this.arsenalService.buscarArsenalPorNombre('a')).pipe(
+				map((res: RespuestaPaginada<Arsenal>) => {
+					this.listadoArsenal = res.items;
+					return res.items;
+				})
+			);
 		}
-
-		// this.existeArsenal = false;
-		// this.listadoArsenal = new Array<Arsenal>();
-		// if (event.target.value.length > 0) {
-		// 	Promise.resolve(this.arsenalService.buscarArsenalPorNombre(event.target.value)).then((res) => {
-		// 		if (res.items.length > 0) {
-		// 			res.items.forEach((arsenal) => {
-		// 				this.listadoArsenal.push(arsenal);
-		// 			});
-		// 		} else {
-		// 			this.notificacionesService.mostrarMensaje(
-		// 				'warning',
-		// 				'Arsenal no encontrado',
-		// 				`No existe el arsenal: ${event.target.value}`
-		// 			);
-		// 			this.formularioRecepcion.controls.descripcionArticulo.setValue('');
-		// 		}
-		// 	});
-		// }
 	}
 
 	opcionSeleccionada(event: string, busquedaPor: string): void {
@@ -176,9 +177,9 @@ export class RecepcionArticulosComponent implements OnInit {
 		}
 	}
 
-	arsenalSeleccionado() {
-		this.existeArsenal = true;
-	}
+	// arsenalSeleccionado() {
+	// 	this.existeArsenal = true;
+	// }
 
 	// opcionArsenalSeleccionada(event: string, busquedaPor: string): void {
 	// 	if (busquedaPor === 'rut') {
