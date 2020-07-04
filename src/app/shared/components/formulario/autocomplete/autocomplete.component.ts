@@ -14,7 +14,7 @@ export class AutocompleteComponent implements OnInit {
 	@Input() hint: string;
 	@Input() nombreValorOpcion: string;
 	@Input() textoOpcion: string;
-	@Input() listadoOpciones: Array<any>;
+	@Input() listadoOpciones: Promise<any>;
 
 	@Output() textoABuscar = new EventEmitter<string>();
 	@Output() opcionSeleccionada = new EventEmitter<any>();
