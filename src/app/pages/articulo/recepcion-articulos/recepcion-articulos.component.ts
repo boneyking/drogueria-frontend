@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
@@ -16,13 +16,14 @@ import { from } from 'rxjs';
 import { RespuestaPaginada } from 'src/app/models/responses/respuesta-paginada.model';
 import { Articulo } from 'src/app/models/articulo.model';
 import { v4 as uuidv4 } from 'uuid';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
 	selector: 'app-recepcion-articulos',
 	templateUrl: './recepcion-articulos.component.html',
 	styleUrls: ['./recepcion-articulos.component.scss'],
 })
-export class RecepcionArticulosComponent implements OnInit {
+export class RecepcionArticulosComponent implements OnInit, OnChanges {
 	public formularioRecepcion: FormGroup;
 	public formularioArticulo: FormGroup;
 	public listadoProveedoresPorRut: Observable<Array<Proveedor>>;
@@ -34,8 +35,18 @@ export class RecepcionArticulosComponent implements OnInit {
 	public fechaMinima = new Date();
 	private arsenalSeleccionado: Arsenal;
 	public fechaHoraInicioRecepción = new Date();
+	public columnasArticulosIngresados: Array<string> = [
+		'codigoBarra',
+		'cantidadEntrada',
+		'identificador',
+		'fechaVencimiento',
+		'valorUnitario',
+		'valorNeto',
+	];
 
 	public listadoArticulosIngresados: Array<Articulo>;
+
+	public sourceTablaArticulosIngresados = new MatTableDataSource<Articulo>([]);
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -55,6 +66,12 @@ export class RecepcionArticulosComponent implements OnInit {
 		this.arsenalSeleccionado = new Arsenal();
 	}
 
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes.listadoArticulosIngresados && changes.listadoArticulosIngresados.currentValue) {
+			this.listadoArticulosIngresados = changes.listadoArticulosIngresados.currentValue;
+		}
+	}
+
 	inicializarFormulario(): void {
 		this.formularioRecepcion = this.formBuilder.group({
 			// fechaIngreso: new FormControl(null, [Validators.required]), // fecha actual y hora
@@ -65,8 +82,6 @@ export class RecepcionArticulosComponent implements OnInit {
 			origen: new FormControl('Cenabast', [Validators.required]),
 			// montoTotal: new FormControl(null), // se genera de la suma de los valores netos y el iva
 		});
-
-
 
 		this.listadoProveedoresPorRut = this.formularioRecepcion.get('rutProveedor').valueChanges.pipe(
 			debounceTime(300),
@@ -79,7 +94,7 @@ export class RecepcionArticulosComponent implements OnInit {
 		);
 	}
 
-	inicializarFormularioArticulo(): void{
+	inicializarFormularioArticulo(): void {
 		this.formularioArticulo = this.formBuilder.group({
 			codigoBarraArticulo: new FormControl(null, [Validators.required]),
 			descripcionArticulo: new FormControl(null, [Validators.required]),
@@ -135,11 +150,9 @@ export class RecepcionArticulosComponent implements OnInit {
 	buscarArsenalPorNombre(event: any): Observable<Array<Arsenal>> {
 		this.existeArsenal = false;
 		this.listadoArsenal = new Array<Arsenal>();
-		debugger;
 		if (event.length > 0) {
 			return from(this.arsenalService.buscarArsenalPorNombre(event)).pipe(
 				map((res: RespuestaPaginada<Arsenal>) => {
-					debugger;
 					if (res.items.length === 0) {
 						this.notificacionesService.mostrarMensaje('error', 'Arsenal no encontrado', `No existe el arsenal: ${event}`);
 						this.formularioArticulo.controls.descripcionArticulo.setValue('');
@@ -216,14 +229,15 @@ export class RecepcionArticulosComponent implements OnInit {
 			articulo.responsable = this.utilsService.obtenerResponsable(localStorage.getItem('token'));
 
 			this.listadoArticulosIngresados.push(articulo);
+			this.sourceTablaArticulosIngresados.data = this.listadoArticulosIngresados;
 			this.inicializarFormularioArticulo();
 		} else {
 			this.formularioArticulo.markAllAsTouched();
 		}
 	}
 
-	quitarArticuloAListado(articulo: Articulo){
-		this.listadoArticulosIngresados = this.listadoArticulosIngresados.filter(articuloIngresado => articuloIngresado !== articulo);
+	quitarArticuloAListado(articulo: Articulo) {
+		this.listadoArticulosIngresados = this.listadoArticulosIngresados.filter((articuloIngresado) => articuloIngresado !== articulo);
 	}
 
 	guardarRecepcion(): void {}

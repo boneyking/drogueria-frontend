@@ -125,32 +125,42 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="contenedor">
+				<table mat-table [dataSource]="sourceTablaArticulosIngresados" class="mat-elevation-z8" style="width: 100%;">
+					<ng-container matColumnDef="codigoBarra">
+						<th mat-header-cell *matHeaderCellDef> Código de barra </th>
+						<td mat-cell *matCellDef="let articulo">{{articulo.codigoBarra}} </td>
+					</ng-container>
 
-				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
-					<small>Código de barra</small>
-					<h3>{{articulo.codigoBarra}}</h3>
-				</div>
-				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
-					<small>Cantidad</small>
-					<h3>{{articulo.lote.cantidadEntrada}}</h3>
-				</div>
+					<ng-container matColumnDef="cantidadEntrada">
+						<th mat-header-cell *matHeaderCellDef> Cantidad </th>
+						<td mat-cell *matCellDef="let articulo">{{articulo.lote.cantidadEntrada}} </td>
+					</ng-container>
 
-				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
-					<small>Lote</small>
-					<h3>{{articulo.lote.identificador}}</h3>
-				</div>
-				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
-					<small>Fecha vencimiento</small>
-					<h3>{{articulo.lote.fechaVencimiento | date: 'dd-MM-yyyy'}}</h3>
-				</div>
-				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
-					<small>Valor unitario</small>
-					<h3>{{articulo.lote.valorUnitario | currency}}</h3>
-				</div>
-				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
-					<small>Valor neto</small>
-					<h3></h3>
-				</div>
+					<ng-container matColumnDef="identificador">
+						<th mat-header-cell *matHeaderCellDef> Lote </th>
+						<td mat-cell *matCellDef="let articulo">{{articulo.lote.identificador}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="fechaVencimiento">
+						<th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
+						<td mat-cell *matCellDef="let articulo">{{articulo.lote.fechaVencimiento | date: 'dd-MM-yyyy'}}
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="valorUnitario">
+						<th mat-header-cell *matHeaderCellDef> Valor unitario </th>
+						<td mat-cell *matCellDef="let articulo">${{articulo.lote.valorUnitario | number:'1.0-0'}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="valorNeto">
+						<th mat-header-cell *matHeaderCellDef> Valor neto </th>
+						<td mat-cell *matCellDef="let articulo">
+							${{(articulo.lote.valorUnitario * articulo.lote.cantidadEntrada) | number:'1.0-0'}}</td>
+					</ng-container>
+
+					<tr mat-header-row *matHeaderRowDef="columnasArticulosIngresados"></tr>
+					<tr mat-row *matRowDef="let row; columns: columnasArticulosIngresados;"></tr>
+				</table>
 			</div>
 		</mat-card-content>
 	</mat-card>
