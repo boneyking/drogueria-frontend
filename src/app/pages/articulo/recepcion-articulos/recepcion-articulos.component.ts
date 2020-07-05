@@ -14,7 +14,8 @@ import { Observable } from 'rxjs';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { RespuestaPaginada } from 'src/app/models/responses/respuesta-paginada.model';
-import { EMPTY } from 'rxjs';
+import { Articulo } from 'src/app/models/articulo.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
 	selector: 'app-recepcion-articulos',
@@ -23,6 +24,7 @@ import { EMPTY } from 'rxjs';
 })
 export class RecepcionArticulosComponent implements OnInit {
 	public formularioRecepcion: FormGroup;
+	public formularioArticulo: FormGroup;
 	public listadoProveedoresPorRut: Observable<Array<Proveedor>>;
 	public listadoProveedoresPorNombre: Observable<Array<Proveedor>>;
 	public listadoProveedores: Array<Proveedor>;
@@ -30,6 +32,10 @@ export class RecepcionArticulosComponent implements OnInit {
 	public listadoArsenal: Array<Arsenal>;
 	public existeArsenal = false;
 	public fechaMinima = new Date();
+	private arsenalSeleccionado: Arsenal;
+	public fechaHoraInicioRecepción = new Date();
+
+	public listadoArticulosIngresados: Array<Articulo>;
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -37,13 +43,16 @@ export class RecepcionArticulosComponent implements OnInit {
 		private proveedorService: ProveedorService,
 		private articuloService: ArticuloService,
 		private arsenalService: ArsenalService,
-		private notificacionesService: NotificacionesService
+		private notificacionesService: NotificacionesService,
+		private utilsService: UtilsService
 	) {}
 
 	ngOnInit(): void {
 		this.listadoArsenal = new Array<Arsenal>();
-		// this.listadoProveedores = new Array<Proveedor>();
 		this.inicializarFormulario();
+		this.inicializarFormularioArticulo();
+		this.listadoArticulosIngresados = new Array<Articulo>();
+		this.arsenalSeleccionado = new Arsenal();
 	}
 
 	inicializarFormulario(): void {
@@ -55,13 +64,9 @@ export class RecepcionArticulosComponent implements OnInit {
 			identificadorDocumento: new FormControl(null, [Validators.required]),
 			origen: new FormControl('Cenabast', [Validators.required]),
 			// montoTotal: new FormControl(null), // se genera de la suma de los valores netos y el iva
-			codigoBarraArticulo: new FormControl(null, [Validators.required]),
-			descripcionArticulo: new FormControl(null, [Validators.required]),
-			cantidadArticulo: new FormControl(null, [Validators.required, Validators.min(1)]),
-			identificadorLoteArticulo: new FormControl(null, [Validators.required]),
-			fechaVencimientoArticulo: new FormControl((new Date()).toISOString(), [Validators.required]),
-			valorUnitarioArticulo: new FormControl('1', [Validators.required, Validators.min(1)]),
 		});
+
+
 
 		this.listadoProveedoresPorRut = this.formularioRecepcion.get('rutProveedor').valueChanges.pipe(
 			debounceTime(300),
@@ -72,8 +77,18 @@ export class RecepcionArticulosComponent implements OnInit {
 			debounceTime(300),
 			switchMap((value) => this.buscarProveedorPorNombre(value))
 		);
+	}
 
-		this.listadoArsenalPorNombre = this.formularioRecepcion.get('descripcionArticulo').valueChanges.pipe(
+	inicializarFormularioArticulo(): void{
+		this.formularioArticulo = this.formBuilder.group({
+			codigoBarraArticulo: new FormControl(null, [Validators.required]),
+			descripcionArticulo: new FormControl(null, [Validators.required]),
+			cantidadArticulo: new FormControl('1', [Validators.required, Validators.min(1)]),
+			identificadorLoteArticulo: new FormControl(null, [Validators.required]),
+			fechaVencimientoArticulo: new FormControl(new Date().toISOString(), [Validators.required]),
+			valorUnitarioArticulo: new FormControl('1', [Validators.required, Validators.min(1)]),
+		});
+		this.listadoArsenalPorNombre = this.formularioArticulo.get('descripcionArticulo').valueChanges.pipe(
 			debounceTime(300),
 			switchMap((value) => this.buscarArsenalPorNombre(value))
 		);
@@ -120,16 +135,14 @@ export class RecepcionArticulosComponent implements OnInit {
 	buscarArsenalPorNombre(event: any): Observable<Array<Arsenal>> {
 		this.existeArsenal = false;
 		this.listadoArsenal = new Array<Arsenal>();
+		debugger;
 		if (event.length > 0) {
 			return from(this.arsenalService.buscarArsenalPorNombre(event)).pipe(
 				map((res: RespuestaPaginada<Arsenal>) => {
+					debugger;
 					if (res.items.length === 0) {
-						this.notificacionesService.mostrarMensaje(
-							'error',
-							'Arsenal no encontrado',
-							`No existe el arsenal: ${event}`
-						);
-						this.formularioRecepcion.controls.descripcionArticulo.setValue('');
+						this.notificacionesService.mostrarMensaje('error', 'Arsenal no encontrado', `No existe el arsenal: ${event}`);
+						this.formularioArticulo.controls.descripcionArticulo.setValue('');
 					}
 					this.listadoArsenal = res.items;
 					return res.items;
@@ -178,23 +191,40 @@ export class RecepcionArticulosComponent implements OnInit {
 		}
 	}
 
-	// arsenalSeleccionado() {
-	// 	this.existeArsenal = true;
-	// }
+	opcionArsenalSeleccionado(nombreArsenal: string): void {
+		const arsenalSeleccionado = this.listadoArsenal.find((arsenal) => {
+			return arsenal.nombre === nombreArsenal;
+		});
+		if (arsenalSeleccionado !== undefined) {
+			this.arsenalSeleccionado = new Arsenal();
+			this.arsenalSeleccionado = arsenalSeleccionado;
+		}
+	}
 
-	// opcionArsenalSeleccionada(event: string, busquedaPor: string): void {
-	// 	if (busquedaPor === 'rut') {
-	// 		const proveedor = this.listadoProveedores.find((element) => {
-	// 			return (element.rut = event);
-	// 		});
-	// 		this.formularioRecepcion.controls.nombreProveedor.setValue(proveedor.nombre);
-	// 	} else if (busquedaPor === 'nombre') {
-	// 		const proveedor = this.listadoProveedores.find((element) => {
-	// 			return element.nombre === event;
-	// 		});
-	// 		this.formularioRecepcion.controls.rutProveedor.setValue(proveedor.rut);
-	// 	}
-	// }
+	agregarArticuloAListado() {
+		if (this.formularioArticulo.valid) {
+			const articulo = new Articulo();
+			articulo.id = uuidv4();
+			articulo.codigoBarra = this.formularioArticulo.controls.codigoBarraArticulo.value;
+			articulo.arsenal = this.arsenalSeleccionado;
+			articulo.lote.identificador = this.formularioArticulo.controls.identificadorLoteArticulo.value;
+			articulo.lote.fechaVencimiento = this.formularioArticulo.controls.fechaVencimientoArticulo.value;
+			articulo.lote.valorUnitario = this.formularioArticulo.controls.valorUnitarioArticulo.value;
+			articulo.lote.cantidadEntrada = this.formularioArticulo.controls.cantidadArticulo.value;
+			articulo.lote.stock = articulo.lote.cantidadEntrada;
+			articulo.activo = true;
+			articulo.responsable = this.utilsService.obtenerResponsable(localStorage.getItem('token'));
 
-	submit(): void {}
+			this.listadoArticulosIngresados.push(articulo);
+			this.inicializarFormularioArticulo();
+		} else {
+			this.formularioArticulo.markAllAsTouched();
+		}
+	}
+
+	quitarArticuloAListado(articulo: Articulo){
+		this.listadoArticulosIngresados = this.listadoArticulosIngresados.filter(articuloIngresado => articuloIngresado !== articulo);
+	}
+
+	guardarRecepcion(): void {}
 }

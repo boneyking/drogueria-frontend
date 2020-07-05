@@ -1,11 +1,11 @@
-<form [formGroup]="formularioRecepcion" (submit)="submit()">
+<form [formGroup]="formularioRecepcion" (submit)="guardarRecepcion()">
 	<mat-card>
 		<mat-card-header>
 			<mat-card-subtitle>Información documento</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
 			<div class="contenedor">
-				<div class="elemento">
+				<div class="elemento" style="width:150px">
 					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'rutProveedor'"
 						[placeholder]="'Ej: 11.111.111-1'" [etiqueta]="'Rut Proveedor'"
 						[hint]="'Indique rut de proveedor'" [nombreValorOpcion]="'rut'" [textoOpcion]="'rut'"
@@ -13,7 +13,7 @@
 						(opcionSeleccionada)="opcionSeleccionada($event, 'rut')">
 					</app-autocomplete>
 				</div>
-				<div class="elemento">
+				<div class="elemento" style="width: 300px;">
 					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'nombreProveedor'"
 						[placeholder]="'Ej: Laboratorio'" [etiqueta]="'Nombre Proveedor'"
 						[hint]="'Indique nombre de proveedor'" [nombreValorOpcion]="'nombre'" [textoOpcion]="'nombre'"
@@ -65,6 +65,8 @@
 			</div>
 		</mat-card-content>
 	</mat-card>
+</form>
+<form [formGroup]="formularioArticulo" (submit)="agregarArticuloAListado()">
 	<mat-card>
 		<mat-card-header>
 			<mat-card-subtitle>Información artículo</mat-card-subtitle>
@@ -72,49 +74,84 @@
 		<mat-card-content>
 			<div class="contenedor">
 				<div class="elemento">
-					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'codigoBarraArticulo'"
+					<app-input [formulario]="formularioArticulo" [nombreCampo]="'codigoBarraArticulo'"
 						[placeholder]="'Ej: 111111111'" [tipoInput]="'text'" [etiqueta]="'Código de barra'"
 						[hint]="'Indique código de barra'" (valorInput)="verificarExistenciaCodigoBarra($event)"
 						onPaste="return false"></app-input>
 				</div>
-				<div class="elemento">
-					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'cantidadArticulo'"
-						[placeholder]="'Ej: 1'" [tipoInput]="'number'" [etiqueta]="'Cantidad'"
-						[hint]="'Indique cantidad'"></app-input>
-				</div>
-				<div class="elemento">
-					<app-autocomplete [formulario]="formularioRecepcion" [nombreCampo]="'descripcionArticulo'"
+				<div class="elemento" style="width: 350px;">
+					<app-autocomplete [formulario]="formularioArticulo" [nombreCampo]="'descripcionArticulo'"
 						[placeholder]="'Ej: PARACETAMOL 500 MG COMPRIMIDO'" [etiqueta]="'Descripción'"
 						[hint]="'Indique descripción de artículo'" [nombreValorOpcion]="'nombre'"
-						[textoOpcion]="'nombre'" [listadoOpciones]="listadoArsenalPorNombre">
+						[textoOpcion]="'nombre'" [listadoOpciones]="listadoArsenalPorNombre"
+						(opcionSeleccionada)="opcionArsenalSeleccionado($event)">
 					</app-autocomplete>
 				</div>
 				<div class="elemento">
-					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'identificadorLoteArticulo'"
+					<app-input [formulario]="formularioArticulo" [nombreCampo]="'cantidadArticulo'"
+						[placeholder]="'Ej: 1'" [tipoInput]="'number'" [etiqueta]="'Cantidad'"
+						[hint]="'Indique cantidad'"></app-input>
+				</div>
+			</div>
+			<div class="contenedor">
+				<div class="elemento">
+					<app-input [formulario]="formularioArticulo" [nombreCampo]="'identificadorLoteArticulo'"
 						[placeholder]="'Ej: 1903a1008'" [tipoInput]="'text'" [etiqueta]="'Lote'"
 						[hint]="'Indique identificador de lote'"></app-input>
 				</div>
 				<div class="elemento">
-					<app-input [formulario]="formularioRecepcion" [nombreCampo]="'valorUnitarioArticulo'"
+					<app-input [formulario]="formularioArticulo" [nombreCampo]="'valorUnitarioArticulo'"
 						[placeholder]="'Ej: 1'" [tipoInput]="'number'" [etiqueta]="'Valor unitario'"
 						[hint]="'Indique valor unitario'"></app-input>
 				</div>
 				<div class="elemento">
-					<app-datepicker [formulario]="formularioRecepcion" [nombreCampo]="'fechaVencimientoArticulo'"
+					<app-datepicker [formulario]="formularioArticulo" [nombreCampo]="'fechaVencimientoArticulo'"
 						[placeholder]="'Indique fecha vencimiento'" [etiqueta]="'Fecha vencimiento'"
 						[hint]="'Indique fecha vencimiento'" [fechaMinima]="fechaMinima"></app-datepicker>
+				</div>
+				<div class="elemento">
+					<button type="submit" mat-raised-button color="primary">
+						<mat-icon>add_circle_outline</mat-icon> Agregar artículo
+					</button>
 				</div>
 			</div>
 		</mat-card-content>
 	</mat-card>
-	<mat-card>
+	<mat-card *ngIf="listadoArticulosIngresados.length > 0">
 		<mat-card-header>
 			<mat-card-subtitle>
 				Artículos ingresados
 			</mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
+			<div class="contenedor">
 
+				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
+					<small>Código de barra</small>
+					<h3>{{articulo.codigoBarra}}</h3>
+				</div>
+				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
+					<small>Cantidad</small>
+					<h3>{{articulo.lote.cantidadEntrada}}</h3>
+				</div>
+
+				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
+					<small>Lote</small>
+					<h3>{{articulo.lote.identificador}}</h3>
+				</div>
+				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
+					<small>Fecha vencimiento</small>
+					<h3>{{articulo.lote.fechaVencimiento | date: 'dd-MM-yyyy'}}</h3>
+				</div>
+				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
+					<small>Valor unitario</small>
+					<h3>{{articulo.lote.valorUnitario | currency}}</h3>
+				</div>
+				<div class="elemento" *ngFor="let articulo of listadoArticulosIngresados; let indice = index;">
+					<small>Valor neto</small>
+					<h3></h3>
+				</div>
+			</div>
 		</mat-card-content>
 	</mat-card>
 </form>

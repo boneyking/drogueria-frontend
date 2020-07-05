@@ -35,6 +35,7 @@
 		"RUT-REGISTRADO": "Este RUT ya se encuentra registrado",
 		"CONTRASENAS-NO-COINCIDEN": "Las contraseñas no coinciden",
 		"RUTINVALIDO": "Rut invalido",
-		"MATDATEPICKERPARSE": "Formato incorrecto en fecha"
+		"MATDATEPICKERPARSE": "Formato incorrecto en fecha",
+		"MATDATEPICKERMIN": "La fecha indicada no puede ser menor al {{value}}"
 	}
 }
