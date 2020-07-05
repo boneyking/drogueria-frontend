@@ -205,6 +205,10 @@
 							<div mat-line> ${{ (sumaValorNeto() + sumaValorIva()) | number:'1.0-0'}} </div>
 						</mat-list-item>
 					</mat-list>
+					<br>
+					<button type="button" mat-button mat-raised-button color="primary" (click)="guardarRecepcion()">
+						<mat-icon>save</mat-icon> Terminar recepción de artículos
+					</button>
 				</div>
 			</div>
 		</mat-card-content>

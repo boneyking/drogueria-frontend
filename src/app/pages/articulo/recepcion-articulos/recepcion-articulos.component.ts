@@ -43,7 +43,7 @@ export class RecepcionArticulosComponent implements OnInit {
 		'fechaVencimiento',
 		'valorUnitario',
 		'valorNeto',
-		'quitar'
+		'quitar',
 	];
 
 	public listadoArticulosIngresados: Array<Articulo>;
@@ -238,22 +238,35 @@ export class RecepcionArticulosComponent implements OnInit {
 		this.sourceTablaArticulosIngresados.data = this.listadoArticulosIngresados;
 	}
 
-	sumaValorNeto(): number{
+	sumaValorNeto(): number {
 		let totalNeto = 0;
-		this.listadoArticulosIngresados.forEach(articulo => {
-			totalNeto += (articulo.lote.cantidadEntrada * articulo.lote.valorUnitario)
+		this.listadoArticulosIngresados.forEach((articulo) => {
+			totalNeto += articulo.lote.cantidadEntrada * articulo.lote.valorUnitario;
 		});
 		return totalNeto;
 	}
 
-	sumaValorIva(): number{
+	sumaValorIva(): number {
 		let totalIva = 0;
-		this.listadoArticulosIngresados.forEach(articulo => {
+		this.listadoArticulosIngresados.forEach((articulo) => {
 			totalIva += this.utilsService.calcularIVA(articulo.lote.cantidadEntrada * articulo.lote.valorUnitario);
 		});
 
 		return totalIva;
 	}
 
-	guardarRecepcion(): void {}
+	guardarRecepcion(): void {
+		if (this.formularioRecepcion.valid) {
+			if (this.listadoArticulosIngresados.length > 0) {
+				// falta persistencia en bd en store de recepcion
+				// para luego actualizar en store de movimiento y de articulo
+				// pendiente en el caso que se indique un proveedor no existente se pueda guardar de igual manera
+			} else {
+				this.notificacionesService.mostrarMensaje('error', 'Información artículos', 'No se han ingresado artículos');
+			}
+		} else {
+			this.notificacionesService.mostrarMensaje('error', 'Información documento', 'Debe indicar datos del documento');
+			this.formularioRecepcion.markAllAsTouched();
+		}
+	}
 }
