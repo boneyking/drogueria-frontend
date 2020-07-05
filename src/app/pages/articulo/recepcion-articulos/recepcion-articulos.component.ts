@@ -43,6 +43,7 @@ export class RecepcionArticulosComponent implements OnInit {
 		'fechaVencimiento',
 		'valorUnitario',
 		'valorNeto',
+		'quitar'
 	];
 
 	public listadoArticulosIngresados: Array<Articulo>;
@@ -234,6 +235,7 @@ export class RecepcionArticulosComponent implements OnInit {
 
 	quitarArticuloAListado(articulo: Articulo) {
 		this.listadoArticulosIngresados = this.listadoArticulosIngresados.filter((articuloIngresado) => articuloIngresado !== articulo);
+		this.sourceTablaArticulosIngresados.data = this.listadoArticulosIngresados;
 	}
 
 	sumaValorNeto(): number{

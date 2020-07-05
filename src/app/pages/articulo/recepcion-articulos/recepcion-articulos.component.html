@@ -164,6 +164,15 @@
 							${{(articulo.lote.valorUnitario * articulo.lote.cantidadEntrada) | number:'1.0-0'}}</td>
 					</ng-container>
 
+					<ng-container matColumnDef="quitar">
+						<th mat-header-cell *matHeaderCellDef> Quitar </th>
+						<td mat-cell *matCellDef="let articulo">
+							<button type="button" mat-icon-button mat-raised-button color="primary" (click)="quitarArticuloAListado(articulo)">
+								<mat-icon>delete</mat-icon>
+							</button>
+						</td>
+					</ng-container>
+
 					<tr mat-header-row *matHeaderRowDef="columnasArticulosIngresados"></tr>
 					<tr mat-row *matRowDef="let row; columns: columnasArticulosIngresados;"></tr>
 				</table>
