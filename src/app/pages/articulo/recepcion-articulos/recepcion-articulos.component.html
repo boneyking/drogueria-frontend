@@ -100,14 +100,14 @@
 						[hint]="'Indique identificador de lote'"></app-input>
 				</div>
 				<div class="elemento">
-					<app-input [formulario]="formularioArticulo" [nombreCampo]="'valorUnitarioArticulo'"
-						[placeholder]="'Ej: 1'" [tipoInput]="'number'" [etiqueta]="'Valor unitario'"
-						[hint]="'Indique valor unitario'"></app-input>
-				</div>
-				<div class="elemento">
 					<app-datepicker [formulario]="formularioArticulo" [nombreCampo]="'fechaVencimientoArticulo'"
 						[placeholder]="'Indique fecha vencimiento'" [etiqueta]="'Fecha vencimiento'"
 						[hint]="'Indique fecha vencimiento'" [fechaMinima]="fechaMinima"></app-datepicker>
+				</div>
+				<div class="elemento">
+					<app-input [formulario]="formularioArticulo" [nombreCampo]="'valorUnitarioArticulo'"
+						[placeholder]="'Ej: 1'" [tipoInput]="'number'" [etiqueta]="'Valor unitario'"
+						[hint]="'Indique valor unitario'"></app-input>
 				</div>
 				<div class="elemento">
 					<button type="submit" mat-raised-button color="primary">
@@ -125,10 +125,16 @@
 		</mat-card-header>
 		<mat-card-content>
 			<div class="contenedor">
-				<table mat-table [dataSource]="sourceTablaArticulosIngresados" class="mat-elevation-z8" style="width: 100%;">
+				<table mat-table [dataSource]="sourceTablaArticulosIngresados" class="mat-elevation-z8"
+					style="width: 100%;">
 					<ng-container matColumnDef="codigoBarra">
 						<th mat-header-cell *matHeaderCellDef> Código de barra </th>
 						<td mat-cell *matCellDef="let articulo">{{articulo.codigoBarra}} </td>
+					</ng-container>
+
+					<ng-container matColumnDef="nombre">
+						<th mat-header-cell *matHeaderCellDef> Descripción </th>
+						<td mat-cell *matCellDef="let articulo">{{articulo.arsenal.nombre}} </td>
 					</ng-container>
 
 					<ng-container matColumnDef="cantidadEntrada">
@@ -161,6 +167,36 @@
 					<tr mat-header-row *matHeaderRowDef="columnasArticulosIngresados"></tr>
 					<tr mat-row *matRowDef="let row; columns: columnasArticulosIngresados;"></tr>
 				</table>
+			</div>
+		</mat-card-content>
+	</mat-card>
+	<mat-card *ngIf="listadoArticulosIngresados.length > 0" style="width: 300px;">
+		<mat-card-header>
+			<mat-card-subtitle>
+				Monto documento
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<div class="contenedor">
+				<div class="elemento">
+					<mat-list role="list">
+						<mat-list-item>
+							<mat-icon mat-list-icon>attach_money</mat-icon>
+							<div mat-line>Total</div>
+							<div mat-line> ${{sumaValorNeto() | number:'1.0-0'}} </div>
+						</mat-list-item>
+						<mat-list-item>
+							<mat-icon mat-list-icon>receipt</mat-icon>
+							<div mat-line>IVA</div>
+							<div mat-line> ${{sumaValorIva() | number:'1.0-0'}} </div>
+						</mat-list-item>
+						<mat-list-item>
+							<mat-icon mat-list-icon>attach_money</mat-icon>
+							<div mat-line>Total Bruto</div>
+							<div mat-line> ${{ (sumaValorNeto() + sumaValorIva()) | number:'1.0-0'}} </div>
+						</mat-list-item>
+					</mat-list>
+				</div>
 			</div>
 		</mat-card-content>
 	</mat-card>

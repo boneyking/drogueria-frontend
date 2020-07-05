@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
@@ -23,7 +23,7 @@ import { MatTableDataSource } from '@angular/material/table';
 	templateUrl: './recepcion-articulos.component.html',
 	styleUrls: ['./recepcion-articulos.component.scss'],
 })
-export class RecepcionArticulosComponent implements OnInit, OnChanges {
+export class RecepcionArticulosComponent implements OnInit {
 	public formularioRecepcion: FormGroup;
 	public formularioArticulo: FormGroup;
 	public listadoProveedoresPorRut: Observable<Array<Proveedor>>;
@@ -37,6 +37,7 @@ export class RecepcionArticulosComponent implements OnInit, OnChanges {
 	public fechaHoraInicioRecepción = new Date();
 	public columnasArticulosIngresados: Array<string> = [
 		'codigoBarra',
+		'nombre',
 		'cantidadEntrada',
 		'identificador',
 		'fechaVencimiento',
@@ -64,12 +65,6 @@ export class RecepcionArticulosComponent implements OnInit, OnChanges {
 		this.inicializarFormularioArticulo();
 		this.listadoArticulosIngresados = new Array<Articulo>();
 		this.arsenalSeleccionado = new Arsenal();
-	}
-
-	ngOnChanges(changes: SimpleChanges): void {
-		if (changes.listadoArticulosIngresados && changes.listadoArticulosIngresados.currentValue) {
-			this.listadoArticulosIngresados = changes.listadoArticulosIngresados.currentValue;
-		}
 	}
 
 	inicializarFormulario(): void {
@@ -230,6 +225,7 @@ export class RecepcionArticulosComponent implements OnInit, OnChanges {
 
 			this.listadoArticulosIngresados.push(articulo);
 			this.sourceTablaArticulosIngresados.data = this.listadoArticulosIngresados;
+			this.arsenalSeleccionado = new Arsenal();
 			this.inicializarFormularioArticulo();
 		} else {
 			this.formularioArticulo.markAllAsTouched();
@@ -238,6 +234,23 @@ export class RecepcionArticulosComponent implements OnInit, OnChanges {
 
 	quitarArticuloAListado(articulo: Articulo) {
 		this.listadoArticulosIngresados = this.listadoArticulosIngresados.filter((articuloIngresado) => articuloIngresado !== articulo);
+	}
+
+	sumaValorNeto(): number{
+		let totalNeto = 0;
+		this.listadoArticulosIngresados.forEach(articulo => {
+			totalNeto += (articulo.lote.cantidadEntrada * articulo.lote.valorUnitario)
+		});
+		return totalNeto;
+	}
+
+	sumaValorIva(): number{
+		let totalIva = 0;
+		this.listadoArticulosIngresados.forEach(articulo => {
+			totalIva += this.utilsService.calcularIVA(articulo.lote.cantidadEntrada * articulo.lote.valorUnitario);
+		});
+
+		return totalIva;
 	}
 
 	guardarRecepcion(): void {}
